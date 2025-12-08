@@ -31,10 +31,10 @@ export default defineNuxtPlugin((nuxtApp) => {
         mq.addEventListener?.("change", handler);
       }
 
-      if (document.getElementById("nuxt-toastify-plus-container")) return;
+      if (document.getElementById("nuxt-notify-container")) return;
 
       const container = document.createElement("div");
-      container.id = "nuxt-toastify-plus-container";
+      container.id = "nuxt-notify-container";
       document.body.appendChild(container);
 
       const app = createApp({ render: () => h(ToastContainer) });

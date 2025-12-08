@@ -16,9 +16,7 @@
             <Icon name="i-lucide-toast" class="h-5 w-5" />
           </div>
           <div>
-            <h1 class="text-lg font-semibold leading-tight">
-              nuxt-toastify-plus
-            </h1>
+            <h1 class="text-lg font-semibold leading-tight">nuxt-notify</h1>
             <p class="text-xs text-gray-600 dark:text-gray-400">
               Tailwind + Nuxt Icon toast notifications
             </p>
@@ -59,7 +57,7 @@
           <!-- Links (optional) -->
           <a
             class="btn-ghost"
-            href="https://github.com/nizaamomer/nuxt-toastify-plus"
+            href="https://github.com/nizaamomer/nuxt-notify"
             target="_blank"
             rel="noreferrer"
           >
@@ -374,7 +372,7 @@ toast.warning('Warning!')</code></pre>
               </h4>
               <pre class="codeblock"><code>// nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['nuxt-toastify-plus'],
+  modules: ['nuxt-notify'],
   toastify: {
     showIcon: false
   }
