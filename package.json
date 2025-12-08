@@ -1,0 +1,49 @@
+{
+  "name": "nuxt-toastify",
+  "version": "1.0.0",
+  "description": "Advanced toast notifications for Nuxt with Tailwind CSS and icons",
+  "repository": "nizaamomer/nuxt-toastify",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.mts",
+      "import": "./dist/module.mjs"
+    }
+  },
+  "main": "./dist/module.mjs",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/types.d.mts"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build build",
+    "dev": "npm run dev:prepare && nuxi dev playground",
+    "dev:build": "nuxi build playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "release": "npm run prepack && npm publish",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@nuxt/icon": "^1.15.0",
+    "@nuxt/kit": "^4.2.1",
+    "@nuxtjs/tailwindcss": "^6.14.0"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "^3.1.1",
+    "@nuxt/eslint-config": "^1.11.0",
+    "@nuxt/module-builder": "^1.0.2",
+    "@nuxt/schema": "^4.2.1",
+    "@types/node": "latest",
+    "eslint": "^9.39.1",
+    "nuxt": "^4.2.1",
+    "typescript": "~5.9.3",
+    "vue-tsc": "^3.1.7"
+  }
+}
