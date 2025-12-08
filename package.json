@@ -1,10 +1,31 @@
 {
-  "name": "nuxt-toastify",
+  "name": "nuxt-toastify-plus-plus",
   "version": "1.0.0",
-  "description": "Advanced toast notifications for Nuxt with Tailwind CSS and icons",
-  "repository": "nizaamomer/nuxt-toastify",
+  "description": "Advanced toast notifications for Nuxt (Nuxt 3/4) with Tailwind CSS and Nuxt Icon",
   "license": "MIT",
+  "author": "Nizam Omer (nizaamomer) - https://www.nizaamomer.com",
+  "homepage": "https://github.com/nizaamomer/nuxt-toastify-plus-plus#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nizaamomer/nuxt-toastify-plus-plus.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nizaamomer/nuxt-toastify-plus-plus/issues"
+  },
+  "keywords": [
+    "nuxt",
+    "nuxt-module",
+    "nuxt3",
+    "nuxt4",
+    "toast",
+    "toasts",
+    "notifications",
+    "tailwindcss",
+    "nuxt-icon",
+    "vue"
+  ],
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/types.d.mts",
@@ -20,15 +41,17 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "prepack": "nuxt-module-build build",
     "dev": "npm run dev:prepare && nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
-    "release": "npm run prepack && npm publish",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "release": "npm run prepack && npm publish"
   },
   "dependencies": {
     "@nuxt/icon": "^1.15.0",

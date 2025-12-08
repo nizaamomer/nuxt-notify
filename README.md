@@ -1,4 +1,4 @@
-# nuxt-toastify
+# nuxt-toastify-plus
 
 Advanced toast notifications for **Nuxt 3 / Nuxt 4** with **Tailwind CSS** and **Nuxt Icon** — clean UI, actions, avatars, progress, themes, and per-toast Tailwind overrides.
 
@@ -29,15 +29,15 @@ Advanced toast notifications for **Nuxt 3 / Nuxt 4** with **Tailwind CSS** and *
 ### Recommended (Nuxt CLI)
 
 ```bash
-npx nuxt module add nuxt-toastify
+npx nuxt module add nuxt-toastify-plus
 ```
 
 ### Manual
 
 ```bash
-npm i nuxt-toastify
-# pnpm add nuxt-toastify
-# yarn add nuxt-toastify
+npm i nuxt-toastify-plus
+# pnpm add nuxt-toastify-plus
+# yarn add nuxt-toastify-plus
 ```
 
 ---
@@ -48,7 +48,7 @@ Add the module to `nuxt.config.ts`:
 
 ```ts
 export default defineNuxtConfig({
-  modules: ["nuxt-toastify"],
+  modules: ["nuxt-toastify-plus"],
 
   toastify: {
     position: "bottom-left",
@@ -148,7 +148,7 @@ Set theme globally:
 
 ```ts
 export default defineNuxtConfig({
-  modules: ["nuxt-toastify"],
+  modules: ["nuxt-toastify-plus"],
   toastify: {
     theme: "light", // "dark" | "light" | "system"
   },
@@ -168,7 +168,7 @@ Notes:
 
 ```ts
 export default defineNuxtConfig({
-  modules: ["nuxt-toastify"],
+  modules: ["nuxt-toastify-plus"],
   toastify: {
     showIcon: false,
   },

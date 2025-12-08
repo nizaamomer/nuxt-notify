@@ -25,7 +25,7 @@ export interface ModuleOptions {
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: "nuxt-toastify",
+    name: "nuxt-toastify-plus",
     configKey: "toastify",
     compatibility: { nuxt: "^3.0.0 || ^4.0.0" },
   },

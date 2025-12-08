@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  modules: ["nuxt-toastify"],
+  modules: ["nuxt-toastify-plus"],
   compatibilityDate: "2025-12-08",
   toastify: {
     position: "bottom-left",
