@@ -12,6 +12,9 @@ declare module "nuxt/schema" {
         | "bottom-center";
       duration?: number;
       maxToasts?: number;
+      theme?: "dark" | "light" | "system";
+
+      showIcon?: boolean;
     };
   }
 }

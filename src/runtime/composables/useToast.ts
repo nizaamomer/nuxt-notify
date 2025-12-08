@@ -1,25 +1,34 @@
-import { ref } from "vue";
-import type { Toast, ToastOptions } from "../types/toast";
+import { ref, computed } from "vue";
 import { useRuntimeConfig } from "nuxt/app";
+import type { Toast, ToastOptions } from "../types/toast";
 
-// Use a global state that persists across component instances
+// Global state that persists across component instances
 const toasts = ref<Toast[]>([]);
 
 export const useToast = () => {
   const config = useRuntimeConfig();
-  const maxToasts = config.public.toastify?.maxToasts || 5;
+
+  // Read from runtimeConfig INSIDE the composable (not from Node "process")
+  const maxToasts = computed(() => config.public.toastify?.maxToasts ?? 5);
+  const defaultDuration = computed(
+    () => config.public.toastify?.duration ?? 5000
+  );
+  const showIcon = computed(() =>
+    config.public.toastify?.showIcon !== undefined
+      ? config.public.toastify.showIcon
+      : true
+  );
 
   const add = (options: ToastOptions) => {
     const id = `toast-${Date.now()}-${Math.random()
       .toString(36)
       .substring(2, 9)}`;
+
     const duration =
-      options.duration !== undefined
-        ? options.duration
-        : config.public.toastify?.duration ?? 5000;
+      options.duration !== undefined ? options.duration : defaultDuration.value;
 
     // Remove oldest toast if max limit reached
-    if (toasts.value.length >= maxToasts) {
+    if (toasts.value.length >= maxToasts.value) {
       toasts.value.shift();
     }
 
@@ -35,7 +44,6 @@ export const useToast = () => {
     };
 
     toasts.value.push(toast);
-
     return id;
   };
 
@@ -43,9 +51,7 @@ export const useToast = () => {
     const index = toasts.value.findIndex((t) => t.id === id);
     if (index > -1) {
       const toast = toasts.value[index];
-      if (toast?.callback) {
-        toast.callback();
-      }
+      if (toast?.callback) toast.callback();
       toasts.value.splice(index, 1);
     }
   };
@@ -64,7 +70,7 @@ export const useToast = () => {
       title,
       description,
       color: "success",
-      icon: "i-lucide-circle-check",
+      ...(showIcon.value ? { icon: "i-lucide-circle-check" } : {}),
       ...options,
     });
   };
@@ -78,7 +84,7 @@ export const useToast = () => {
       title,
       description,
       color: "error",
-      icon: "i-lucide-circle-x",
+      ...(showIcon.value ? { icon: "i-lucide-circle-x" } : {}),
       ...options,
     });
   };
@@ -92,7 +98,7 @@ export const useToast = () => {
       title,
       description,
       color: "info",
-      icon: "i-lucide-info",
+      ...(showIcon.value ? { icon: "i-lucide-info" } : {}),
       ...options,
     });
   };
@@ -106,7 +112,7 @@ export const useToast = () => {
       title,
       description,
       color: "warning",
-      icon: "i-lucide-triangle-alert",
+      ...(showIcon.value ? { icon: "i-lucide-triangle-alert" } : {}),
       ...options,
     });
   };

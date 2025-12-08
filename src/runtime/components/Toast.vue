@@ -25,7 +25,11 @@
         {{ toast.avatar.text }}
       </span>
     </div>
-    <Icon v-else-if="toast.icon" :name="toast.icon" :class="ui.icon" />
+    <Icon
+      v-else-if="shouldShowIcon && toast.icon"
+      :name="toast.icon"
+      :class="ui.icon"
+    />
 
     <!-- Content -->
     <div :class="ui.wrapper">
@@ -89,52 +93,15 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import type { Toast } from "../types/toast";
+import { useRuntimeConfig } from "nuxt/app";
 
-const props = defineProps<{
-  toast: Toast;
-}>();
-
-const emit = defineEmits<{
-  remove: [id: string];
-}>();
+const props = defineProps<{ toast: Toast }>();
+const emit = defineEmits<{ remove: [id: string] }>();
+const config = useRuntimeConfig();
 
 const progress = ref(100);
 const isPaused = ref(false);
 let progressInterval: ReturnType<typeof setInterval> | null = null;
-
-const ui = computed(() => {
-  const color = props.toast.color || "primary";
-  const orientation = props.toast.orientation || "vertical";
-
-  return {
-    root: [
-      "w-full relative group overflow-hidden bg-white dark:bg-gray-900 shadow-lg rounded-lg ring-1 ring-gray-200 dark:ring-gray-800 p-4 flex gap-2.5",
-      "focus:outline-none transition-all duration-300 pointer-events-auto cursor-pointer",
-      orientation === "horizontal" ? "items-center" : "items-start",
-      colorClasses[color]?.root,
-    ],
-    wrapper: "w-0 flex-1 flex flex-col",
-    title: "text-sm font-medium text-gray-900 dark:text-white",
-    description: [
-      "text-sm text-gray-500 dark:text-gray-400",
-      props.toast.title && "mt-1",
-    ],
-    icon: ["shrink-0 w-5 h-5", colorClasses[color]?.icon],
-    avatar:
-      "shrink-0 w-10 h-10 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800",
-    actions: [
-      "flex gap-1.5 shrink-0",
-      orientation === "horizontal" ? "items-center" : "items-start mt-2.5",
-    ],
-    progress: [
-      "absolute inset-x-0 bottom-0 h-1 transition-all duration-100",
-      progressColorClasses[color],
-    ],
-    close:
-      "p-0 shrink-0 text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors",
-  };
-});
-
 const colorClasses: Record<string, any> = {
   primary: {
     root: "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500",
@@ -165,7 +132,6 @@ const colorClasses: Record<string, any> = {
     icon: "text-gray-900 dark:text-white",
   },
 };
-
 const progressColorClasses: Record<string, string> = {
   primary: "bg-blue-500",
   secondary: "bg-purple-500",
@@ -175,12 +141,63 @@ const progressColorClasses: Record<string, string> = {
   error: "bg-red-500",
   neutral: "bg-gray-500",
 };
+const cx = (...parts: Array<string | false | null | undefined>) =>
+  parts.filter(Boolean).join(" ");
 
-const toastClasses = computed(() => ui.value.root.filter(Boolean).join(" "));
+const ui = computed(() => {
+  const color = props.toast.color || "primary";
+  const orientation = props.toast.orientation || "vertical";
+  const o = props.toast.ui || {};
 
-const showClose = computed(() => {
-  return props.toast.close !== false;
+  return {
+    root: cx(
+      "w-full relative group overflow-hidden bg-white dark:bg-gray-900 shadow-lg rounded-lg ring-1 ring-gray-200 dark:ring-gray-800 p-4 flex gap-2.5",
+      "focus:outline-none transition-all duration-300 pointer-events-auto cursor-pointer",
+      orientation === "horizontal" ? "items-center" : "items-start",
+      colorClasses[color]?.root,
+      o.root
+    ),
+    wrapper: cx("w-0 flex-1 flex flex-col", o.wrapper),
+    title: cx("text-sm font-medium text-gray-900 dark:text-white", o.title),
+    description: cx(
+      "text-sm text-gray-500 dark:text-gray-400",
+      props.toast.title ? "mt-1" : "",
+      o.description
+    ),
+    icon: cx("shrink-0 w-5 h-5", colorClasses[color]?.icon, o.icon),
+    avatar: cx(
+      "shrink-0 w-10 h-10 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800",
+      o.avatar
+    ),
+    actions: cx(
+      "flex gap-1.5 shrink-0",
+      orientation === "horizontal" ? "items-center" : "items-start mt-2.5",
+      o.actions
+    ),
+    progress: cx(
+      "absolute inset-x-0 bottom-0 h-1 transition-all duration-100",
+      progressColorClasses[color],
+      o.progress
+    ),
+    close: cx(
+      "p-0 shrink-0 text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors",
+      o.close
+    ),
+  };
 });
+
+const toastClasses = computed(() => ui.value.root);
+
+const shouldShowIcon = computed(() => {
+  const globalShowIcon = (config.public?.toastify as any)?.showIcon ?? true;
+
+  // per-toast overrides global if explicitly set
+  if (props.toast.showIcon === false) return false;
+  if (props.toast.showIcon === true) return true;
+
+  return globalShowIcon;
+});
+const showClose = computed(() => props.toast.close !== false);
 
 const showProgress = computed(() => {
   return (

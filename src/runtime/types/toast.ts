@@ -1,3 +1,5 @@
+// runtime/types/toast.ts
+
 export type ToastColor =
   | "primary"
   | "secondary"
@@ -6,7 +8,20 @@ export type ToastColor =
   | "warning"
   | "error"
   | "neutral";
+
 export type ToastOrientation = "vertical" | "horizontal";
+
+export type ToastUI = Partial<{
+  root: string;
+  wrapper: string;
+  title: string;
+  description: string;
+  icon: string;
+  avatar: string;
+  actions: string;
+  progress: string;
+  close: string;
+}>;
 
 export interface ToastAction {
   label: string;
@@ -49,6 +64,9 @@ export interface Toast {
   progress?: boolean | ToastProgress;
   duration?: number;
   callback?: () => void;
+
+  ui?: ToastUI;
+  showIcon?: boolean;
 }
 
 export interface ToastOptions extends Omit<Toast, "id"> {}

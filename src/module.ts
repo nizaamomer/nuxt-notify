@@ -18,46 +18,42 @@ export interface ModuleOptions {
     | "bottom-center";
   duration?: number;
   maxToasts?: number;
+
+  theme?: "dark" | "light" | "system";
+  showIcon?: boolean;
 }
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: "nuxt-toastify",
     configKey: "toastify",
-    compatibility: {
-      nuxt: "^3.0.0 || ^4.0.0",
-    },
+    compatibility: { nuxt: "^3.0.0 || ^4.0.0" },
   },
   defaults: {
     position: "top-right",
     duration: 5000,
     maxToasts: 5,
+
+    theme: "dark",
+    showIcon: true,
   },
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url);
 
-    /**
-     * Install required modules (only if not already installed)
-     */
     const modules = nuxt.options.modules || [];
-
     const hasModule = (name: string) =>
       modules.some((m: any) => (Array.isArray(m) ? m[0] : m) === name);
 
     if (!hasModule("@nuxtjs/tailwindcss")) {
-      // @ts-ignore - installModule is deprecated but works
+      // @ts-ignore
       await installModule("@nuxtjs/tailwindcss");
     }
-
     if (!hasModule("@nuxt/icon")) {
-      // @ts-ignore - installModule is deprecated but works
+      // @ts-ignore
       await installModule("@nuxt/icon");
     }
 
-    /**
-     * Ensure Tailwind scans this module's runtime files
-     * Otherwise Tailwind may purge the classes used in runtime/components/*.vue
-     */
+    // @ts-ignore
     // @ts-ignore - tailwindcss:config hook is provided by @nuxtjs/tailwindcss
     nuxt.hook("tailwindcss:config", (tailwindConfig: any) => {
       const runtimeGlob = resolver.resolve("./runtime/**/*.{vue,js,ts,mjs}");
@@ -71,25 +67,23 @@ export default defineNuxtModule<ModuleOptions>({
       } else {
         tailwindConfig.content = [runtimeGlob];
       }
+
+      if (!tailwindConfig.darkMode) {
+        tailwindConfig.darkMode = "class";
+      }
     });
 
-    /**
-     * Add runtime config
-     */
+    // ✅ UPDATED runtime config
     nuxt.options.runtimeConfig.public.toastify = {
       position: options.position,
       duration: options.duration,
       maxToasts: options.maxToasts,
+      theme: options.theme,
+      showIcon: options.showIcon,
     };
 
-    /**
-     * Auto-import composables (useToast available everywhere)
-     */
     addImportsDir(resolver.resolve("./runtime/composables"));
 
-    /**
-     * Register components
-     */
     addComponent({
       name: "ToastContainer",
       filePath: resolver.resolve("./runtime/components/ToastContainer.vue"),
@@ -101,9 +95,6 @@ export default defineNuxtModule<ModuleOptions>({
       filePath: resolver.resolve("./runtime/components/Toast.vue"),
     });
 
-    /**
-     * Plugin that auto-mounts ToastContainer
-     */
     addPlugin(resolver.resolve("./runtime/plugin"));
   },
 });
