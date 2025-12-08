@@ -1,16 +1,16 @@
 {
-  "name": "nuxt-toastify-plus-plus",
-  "version": "1.0.0",
+  "name": "nuxt-toastify-plus",
+  "version": "1.0.1",
   "description": "Advanced toast notifications for Nuxt (Nuxt 3/4) with Tailwind CSS and Nuxt Icon",
   "license": "MIT",
   "author": "Nizam Omer (nizaamomer) - https://www.nizaamomer.com",
-  "homepage": "https://github.com/nizaamomer/nuxt-toastify-plus-plus#readme",
+  "homepage": "https://github.com/nizaamomer/nuxt-toastify-plus#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nizaamomer/nuxt-toastify-plus-plus.git"
+    "url": "git+https://github.com/nizaamomer/nuxt-toastify-plus.git"
   },
   "bugs": {
-    "url": "https://github.com/nizaamomer/nuxt-toastify-plus-plus/issues"
+    "url": "https://github.com/nizaamomer/nuxt-toastify-plus/issues"
   },
   "keywords": [
     "nuxt",
