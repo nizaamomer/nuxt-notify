@@ -1,10 +1,10 @@
 {
   "name": "nuxt-notify",
-  "version": "1.0.2",
-  "description": "Advanced toast notifications for Nuxt (Nuxt 3/4) with Tailwind CSS and Nuxt Icon",
+  "version": "1.0.0",
+  "description": "Advanced toast notifications for Nuxt 3/4 with Tailwind CSS + Nuxt Icon (actions, avatars, progress, themes, UI overrides).",
   "license": "MIT",
   "author": "Nizam Omer (nizaamomer) - https://www.nizaamomer.com",
-  "homepage": "https://github.com/nizaamomer/nuxt-notify#readme",
+  "homepage": "https://nuxt-notify.nizaamomer.com/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nizaamomer/nuxt-notify.git"
@@ -12,18 +12,20 @@
   "bugs": {
     "url": "https://github.com/nizaamomer/nuxt-notify/issues"
   },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/nizaamomer"
+  },
   "keywords": [
     "nuxt",
     "nuxt-module",
     "nuxt3",
     "nuxt4",
     "toast",
-    "toasts",
     "notifications",
+    "toastify",
     "tailwindcss",
     "nuxt-icon",
-    "nizaamomer",
-    "nuxt-notify",
     "vue"
   ],
   "type": "module",
@@ -34,19 +36,14 @@
       "import": "./dist/module.mjs"
     }
   },
-  "main": "./dist/module.mjs",
-  "typesVersions": {
-    "*": {
-      ".": [
-        "./dist/types.d.mts"
-      ]
-    }
-  },
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "prepack": "nuxt-module-build build",
     "dev": "npm run dev:prepare && nuxi dev playground",
@@ -55,13 +52,13 @@
     "lint": "eslint .",
     "release": "npm run prepack && npm publish"
   },
+  "peerDependencies": {
+    "nuxt": "^3.0.0 || ^4.0.0"
+  },
   "dependencies": {
-    "@nuxt/icon": "^1.15.0",
-    "@nuxt/kit": "^4.2.1",
-    "@nuxtjs/tailwindcss": "^6.14.0"
+    "@nuxt/kit": "^3.0.0 || ^4.0.0"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.79",
     "@nuxt/devtools": "^3.1.1",
     "@nuxt/eslint-config": "^1.11.0",
     "@nuxt/module-builder": "^1.0.2",

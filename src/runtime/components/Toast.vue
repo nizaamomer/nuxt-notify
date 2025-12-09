@@ -189,7 +189,7 @@ const ui = computed(() => {
 const toastClasses = computed(() => ui.value.root);
 
 const shouldShowIcon = computed(() => {
-  const globalShowIcon = (config.public?.toastify as any)?.showIcon ?? true;
+  const globalShowIcon = (config.public?.notify as any)?.showIcon ?? true;
 
   // per-toast overrides global if explicitly set
   if (props.toast.showIcon === false) return false;

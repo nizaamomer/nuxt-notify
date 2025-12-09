@@ -2,7 +2,7 @@ export {};
 
 declare module "nuxt/schema" {
   interface PublicRuntimeConfig {
-    toastify?: {
+    notify?: {
       position?:
         | "top-right"
         | "top-left"

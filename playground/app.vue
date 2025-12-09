@@ -88,11 +88,11 @@
             </div>
 
             <div class="flex flex-wrap gap-2">
-              <span class="badge">position: {{ toastifyCfg.position }}</span>
-              <span class="badge">duration: {{ toastifyCfg.duration }}ms</span>
-              <span class="badge">maxToasts: {{ toastifyCfg.maxToasts }}</span>
-              <span class="badge">theme: {{ toastifyCfg.theme }}</span>
-              <span class="badge">showIcon: {{ toastifyCfg.showIcon }}</span>
+              <span class="badge">position: {{ notifyCfg.position }}</span>
+              <span class="badge">duration: {{ notifyCfg.duration }}ms</span>
+              <span class="badge">maxToasts: {{ notifyCfg.maxToasts }}</span>
+              <span class="badge">theme: {{ notifyCfg.theme }}</span>
+              <span class="badge">showIcon: {{ notifyCfg.showIcon }}</span>
             </div>
           </div>
 
@@ -121,7 +121,7 @@
               </div>
               <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">
                 This demo toggles <code class="code">html.dark</code>. In real
-                apps, set <code class="code">toastify.theme</code> in
+                apps, set <code class="code">notify.theme</code> in
                 <code class="code">nuxt.config</code>.
               </p>
             </div>
@@ -179,9 +179,8 @@
               </div>
 
               <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">
-                In real usage: <code class="code">toastify.showIcon</code> in
-                Nuxt config. Per-toast:
-                <code class="code">showIcon: false</code>.
+                In real usage: <code class="code">notify.showIcon</code> in Nuxt
+                config. Per-toast: <code class="code">showIcon: false</code>.
               </p>
             </div>
           </div>
@@ -373,7 +372,7 @@ toast.warning('Warning!')</code></pre>
               <pre class="codeblock"><code>// nuxt.config.ts
 export default defineNuxtConfig({
   modules: ['nuxt-notify'],
-  toastify: {
+  notify: {
     showIcon: false
   }
 })
@@ -399,8 +398,8 @@ import { useRuntimeConfig } from "nuxt/app";
 const toast = useToast();
 
 const runtime = useRuntimeConfig();
-const toastifyCfg = computed(() => {
-  const cfg = (runtime.public?.toastify as any) || {};
+const notifyCfg = computed(() => {
+  const cfg = (runtime.public?.notify as any) || {};
   return {
     position: cfg.position ?? "top-right",
     duration: cfg.duration ?? 5000,
@@ -413,8 +412,8 @@ const toastifyCfg = computed(() => {
 /**
  * Demo-only toggles (because runtimeConfig doesn't change live)
  */
-const theme = ref<"dark" | "light" | "system">(toastifyCfg.value.theme);
-const iconsEnabled = ref<boolean>(toastifyCfg.value.showIcon);
+const theme = ref<"dark" | "light" | "system">(notifyCfg.value.theme);
+const iconsEnabled = ref<boolean>(notifyCfg.value.showIcon);
 
 const setTheme = (t: "dark" | "light" | "system") => {
   theme.value = t;
@@ -461,7 +460,7 @@ const toggleIcons = () => {
   toast.add({
     title: "Demo icon toggle",
     description:
-      "This toggles per-toast `showIcon` in the demo. Real usage is `toastify.showIcon` in nuxt.config.",
+      "This toggles per-toast `showIcon` in the demo. Real usage is `notify.showIcon` in nuxt.config.",
     icon: iconsEnabled.value ? "i-lucide-eye" : "i-lucide-eye-off",
     color: "neutral",
     showIcon: true, // keep the toggle toast visible

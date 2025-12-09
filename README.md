@@ -3,8 +3,19 @@
 Advanced toast notifications for **Nuxt 3 / Nuxt 4** with **Tailwind CSS** and **Nuxt Icon** — clean UI, actions, avatars, progress, themes, and per-toast Tailwind overrides.
 
 > Maintained by **Nizam Omer** (`nizaamomer`)  
+> Official site: https://nuxt-notify.nizaamomer.com/ (Docs + Playground)  
 > Website: https://www.nizaamomer.com  
 > Repository: `nizaamomer/nuxt-notify`
+
+---
+
+## Requirements
+
+- **Tailwind CSS is required for styling.**  
+  `nuxt-notify` uses Tailwind utility classes for its UI. Without Tailwind, toasts will render but appear unstyled.
+
+- **@nuxt/icon is required for icons.**  
+  If you use icons (default behavior), install `@nuxt/icon`. Without it, icons will not render.
 
 ---
 
@@ -26,18 +37,42 @@ Advanced toast notifications for **Nuxt 3 / Nuxt 4** with **Tailwind CSS** and *
 
 ## Installation
 
-### Recommended (Nuxt CLI)
+### 1) Install the module
 
 ```bash
 npx nuxt module add nuxt-notify
 ```
 
-### Manual
+Or manually:
 
 ```bash
 npm i nuxt-notify
 # pnpm add nuxt-notify
 # yarn add nuxt-notify
+```
+
+### 2) Install Tailwind CSS (required for styling)
+
+If you don’t have Tailwind already:
+
+```bash
+npm install tailwindcss @tailwindcss/vite
+```
+
+Then enable it in `nuxt.config.ts`:
+
+```ts
+import tailwindcss from "@tailwindcss/vite";
+
+export default defineNuxtConfig({
+  vite: { plugins: [tailwindcss()] },
+});
+```
+
+### 3) Install Nuxt Icon (required for icons)
+
+```bash
+npx nuxi@latest module add icon
 ```
 
 ---
@@ -50,7 +85,7 @@ Add the module to `nuxt.config.ts`:
 export default defineNuxtConfig({
   modules: ["nuxt-notify"],
 
-  toastify: {
+  notify: {
     position: "bottom-left",
     duration: 2000,
     maxToasts: 3,
@@ -149,7 +184,7 @@ Set theme globally:
 ```ts
 export default defineNuxtConfig({
   modules: ["nuxt-notify"],
-  toastify: {
+  notify: {
     theme: "light", // "dark" | "light" | "system"
   },
 });
@@ -169,7 +204,7 @@ Notes:
 ```ts
 export default defineNuxtConfig({
   modules: ["nuxt-notify"],
-  toastify: {
+  notify: {
     showIcon: false,
   },
 });
@@ -366,24 +401,16 @@ Types are included. If autocomplete does not appear after install:
 
 ## Troubleshooting
 
-### Theme not changing (light/dark)
+### Toasts are unstyled
 
-Ensure Tailwind is class-based dark mode:
+Tailwind is required for the UI. Ensure Tailwind is installed and enabled in Nuxt, and that your build is scanning runtime classes.
 
-```js
-// tailwind.config.js
-export default {
-  darkMode: "class",
-};
-```
+### Icons are missing
 
-### Classes missing in production
-
-Build + preview to verify Tailwind doesn’t purge runtime styles:
+Install `@nuxt/icon`:
 
 ```bash
-npm run build
-npm run preview
+npx nuxi@latest module add icon
 ```
 
 ---

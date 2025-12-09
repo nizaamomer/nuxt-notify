@@ -9,13 +9,13 @@ export const useToast = () => {
   const config = useRuntimeConfig();
 
   // Read from runtimeConfig INSIDE the composable (not from Node "process")
-  const maxToasts = computed(() => config.public.toastify?.maxToasts ?? 5);
+  const maxToasts = computed(() => config.public.notify?.maxToasts ?? 5);
   const defaultDuration = computed(
-    () => config.public.toastify?.duration ?? 5000
+    () => config.public.notify?.duration ?? 5000
   );
   const showIcon = computed(() =>
-    config.public.toastify?.showIcon !== undefined
-      ? config.public.toastify.showIcon
+    config.public.notify?.showIcon !== undefined
+      ? config.public.notify.showIcon
       : true
   );
 

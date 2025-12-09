@@ -20,8 +20,8 @@ const config = useRuntimeConfig();
 
 const containerClasses = computed(() => {
   const position =
-    (config.public?.toastify &&
-      (config.public.toastify as Record<string, any>).position) ||
+    (config.public?.notify &&
+      (config.public.notify as Record<string, any>).position) ||
     "top-right";
   const baseClasses =
     "fixed pointer-events-none w-full max-w-md sm:max-w-sm md:max-w-md";

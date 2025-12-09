@@ -7,7 +7,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   if (import.meta.client) {
     nuxtApp.hook("app:mounted", () => {
       const config = useRuntimeConfig();
-      const theme = (config.public?.toastify as any)?.theme ?? "dark";
+      const theme = (config.public?.notify as any)?.theme ?? "dark";
 
       const root = document.documentElement;
 

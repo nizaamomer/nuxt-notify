@@ -5,7 +5,6 @@ import {
   createResolver,
   addComponent,
   addImportsDir,
-  installModule,
 } from "@nuxt/kit";
 
 export interface ModuleOptions {
@@ -18,7 +17,6 @@ export interface ModuleOptions {
     | "bottom-center";
   duration?: number;
   maxToasts?: number;
-
   theme?: "dark" | "light" | "system";
   showIcon?: boolean;
 }
@@ -26,14 +24,13 @@ export interface ModuleOptions {
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: "nuxt-notify",
-    configKey: "toastify",
+    configKey: "notify",
     compatibility: { nuxt: "^3.0.0 || ^4.0.0" },
   },
   defaults: {
     position: "top-right",
     duration: 5000,
     maxToasts: 5,
-
     theme: "dark",
     showIcon: true,
   },
@@ -44,37 +41,42 @@ export default defineNuxtModule<ModuleOptions>({
     const hasModule = (name: string) =>
       modules.some((m: any) => (Array.isArray(m) ? m[0] : m) === name);
 
-    if (!hasModule("@nuxtjs/tailwindcss")) {
-      // @ts-ignore
-      await installModule("@nuxtjs/tailwindcss");
+    const hasTailwind =
+      hasModule("@nuxtjs/tailwindcss") || hasModule("@tailwindcss/vite");
+    const hasNuxtIcon = hasModule("@nuxt/icon");
+
+    // Tailwind integration (only if present)
+    if (hasTailwind) {
+      nuxt.hook("tailwindcss:config" as any, (tailwindConfig: any) => {
+        const runtimeGlob = resolver.resolve("./runtime/**/*.{vue,js,ts,mjs}");
+
+        const content = tailwindConfig.content;
+        if (Array.isArray(content)) content.push(runtimeGlob);
+        else if (content && Array.isArray(content.files))
+          content.files.push(runtimeGlob);
+        else tailwindConfig.content = [runtimeGlob];
+
+        if (!tailwindConfig.darkMode) tailwindConfig.darkMode = "class";
+      });
+    } else {
+      nuxt.hook("ready", () => {
+        console.warn(
+          "[nuxt-notify] Tailwind CSS not found. Toast styles may look different."
+        );
+      });
     }
-    if (!hasModule("@nuxt/icon")) {
-      // @ts-ignore
-      await installModule("@nuxt/icon");
+
+    // Icon integration (only if present)
+    if (!hasNuxtIcon) {
+      nuxt.hook("ready", () => {
+        console.warn(
+          "[nuxt-notify] @nuxt/icon not found. Toast icons will be hidden."
+        );
+      });
     }
 
-    // @ts-ignore
-    // @ts-ignore - tailwindcss:config hook is provided by @nuxtjs/tailwindcss
-    nuxt.hook("tailwindcss:config", (tailwindConfig: any) => {
-      const runtimeGlob = resolver.resolve("./runtime/**/*.{vue,js,ts,mjs}");
-
-      const content = tailwindConfig.content;
-
-      if (Array.isArray(content)) {
-        content.push(runtimeGlob);
-      } else if (content && Array.isArray(content.files)) {
-        content.files.push(runtimeGlob);
-      } else {
-        tailwindConfig.content = [runtimeGlob];
-      }
-
-      if (!tailwindConfig.darkMode) {
-        tailwindConfig.darkMode = "class";
-      }
-    });
-
-    // ✅ UPDATED runtime config
-    nuxt.options.runtimeConfig.public.toastify = {
+    // Runtime config
+    nuxt.options.runtimeConfig.public.notify = {
       position: options.position,
       duration: options.duration,
       maxToasts: options.maxToasts,
