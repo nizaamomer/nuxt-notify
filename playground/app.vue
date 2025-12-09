@@ -779,7 +779,7 @@ const showMultiple = () => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="postcss">
 /* Segmented control */
 .seg {
   @apply inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-800;

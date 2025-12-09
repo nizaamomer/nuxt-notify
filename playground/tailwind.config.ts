@@ -6,8 +6,6 @@ module.exports = {
     "./plugins/**/*.{js,ts}",
     "./app.vue",
     "./error.vue",
-    // Scan your module's runtime files
-    "../runtime/**/*.{vue,js,ts}",
   ],
   darkMode: "class",
   theme: {

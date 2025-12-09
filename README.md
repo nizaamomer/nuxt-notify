@@ -51,23 +51,55 @@ npm i nuxt-notify
 # yarn add nuxt-notify
 ```
 
-### 2) Install Tailwind CSS (required for styling)
+### 2) Tailwind CSS Setup
 
-If you don’t have Tailwind already:
+This module supports **both** Tailwind CSS setups:
 
+### Option 1: Tailwind v4 (Recommended)
 ```bash
 npm install tailwindcss @tailwindcss/vite
 ```
 
-Then enable it in `nuxt.config.ts`:
-
+**`nuxt.config.ts`:**
 ```ts
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
-  vite: { plugins: [tailwindcss()] },
+  modules: ["nuxt-notify", "@nuxt/icon"],
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });
 ```
+
+No `tailwind.config` file needed! The module uses the `@source` directive internally.
+
+### Option 2: @nuxtjs/tailwindcss
+```bash
+npm install -D @nuxtjs/tailwindcss
+```
+
+**`nuxt.config.ts`:**
+```ts
+export default defineNuxtConfig({
+  modules: ["@nuxtjs/tailwindcss", "nuxt-notify", "@nuxt/icon"],
+});
+```
+
+**`tailwind.config.js`:**
+```js
+module.exports = {
+  content: [
+    './components/**/*.{js,vue,ts}',
+    './layouts/**/*.vue',
+    './pages/**/*.vue',
+    './app.vue',
+  ],
+  darkMode: 'class',
+}
+```
+
+The module automatically adds its runtime components to Tailwind's content scanning.
 
 ### 3) Install Nuxt Icon (required for icons)
 
