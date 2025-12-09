@@ -23,7 +23,8 @@ Advanced toast notifications for **Nuxt 3 / Nuxt 4** with **Tailwind CSS** and *
 
 - Nuxt 3 / Nuxt 4 compatible
 - Auto-mounts the toast container (no manual component setup)
-- Tailwind CSS styling (runtime files included in Tailwind content scanning)
+- **Works with both Tailwind v4 and @nuxtjs/tailwindcss** (auto-detects setup)
+- Tailwind CSS styling (runtime files automatically scanned)
 - Nuxt Icon support
 - Positions: `top-right`, `top-left`, `bottom-right`, `bottom-left`, `top-center`, `bottom-center`
 - Options: `duration`, `maxToasts`, `theme` (`dark | light | system`)
@@ -51,55 +52,77 @@ npm i nuxt-notify
 # yarn add nuxt-notify
 ```
 
+---
+
 ### 2) Tailwind CSS Setup
 
-This module supports **both** Tailwind CSS setups:
+This module **automatically detects** and works with both Tailwind CSS setups:
 
-### Option 1: Tailwind v4 (Recommended)
+#### Option A: Tailwind via Vite Plugin (v4+)
+
 ```bash
 npm install tailwindcss @tailwindcss/vite
 ```
 
 **`nuxt.config.ts`:**
+
 ```ts
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
-  modules: ["nuxt-notify", "@nuxt/icon"],
+  modules: ["nuxt-notify"],
+
   vite: {
     plugins: [tailwindcss()],
   },
+
+  css: ["~/assets/css/main.css"],
 });
 ```
 
-No `tailwind.config` file needed! The module uses the `@source` directive internally.
+**`assets/css/main.css`:**
 
-### Option 2: @nuxtjs/tailwindcss
+```css
+@import "tailwindcss";
+```
+
+✅ **No `tailwind.config` needed!** The module handles component scanning automatically.
+
+---
+
+#### Option B: Tailwind via Nuxt Module
+
 ```bash
 npm install -D @nuxtjs/tailwindcss
 ```
 
 **`nuxt.config.ts`:**
+
 ```ts
 export default defineNuxtConfig({
-  modules: ["@nuxtjs/tailwindcss", "nuxt-notify", "@nuxt/icon"],
+  modules: ["@nuxtjs/tailwindcss", "nuxt-notify"],
+
+  css: ["~/assets/css/main.css"],
 });
 ```
 
 **`tailwind.config.js`:**
+
 ```js
 module.exports = {
   content: [
-    './components/**/*.{js,vue,ts}',
-    './layouts/**/*.vue',
-    './pages/**/*.vue',
-    './app.vue',
+    "./components/**/*.{js,vue,ts}",
+    "./layouts/**/*.vue",
+    "./pages/**/*.vue",
+    "./app.vue",
   ],
-  darkMode: 'class',
-}
+  darkMode: "class",
+};
 ```
 
-The module automatically adds its runtime components to Tailwind's content scanning.
+✅ **The module automatically adds its components to Tailwind's content scanning.**
+
+---
 
 ### 3) Install Nuxt Icon (required for icons)
 
@@ -132,7 +155,7 @@ export default defineNuxtConfig({
 });
 ```
 
-That’s it. The toast container is mounted automatically.
+That's it! The toast container is mounted automatically.
 
 ---
 
@@ -222,10 +245,10 @@ export default defineNuxtConfig({
 });
 ```
 
-Notes:
+**Notes:**
 
-- `system` uses the OS theme.
-- Your project must use Tailwind `darkMode: "class"` for theme switching via `html.dark`.
+- `system` uses the OS theme preference
+- Your project must use Tailwind `darkMode: "class"` for theme switching via `html.dark`
 
 ---
 
@@ -415,7 +438,7 @@ toast.add({
 });
 ```
 
-Supported `ui` keys:
+**Supported `ui` keys:**
 
 - `root`, `wrapper`, `title`, `description`, `icon`, `avatar`, `actions`, `progress`, `close`
 
@@ -425,9 +448,9 @@ Supported `ui` keys:
 
 Types are included. If autocomplete does not appear after install:
 
-- restart your IDE TypeScript server
-- reinstall dependencies
-- ensure you are using the latest published version
+- Restart your IDE TypeScript server
+- Reinstall dependencies
+- Ensure you are using the latest published version
 
 ---
 
@@ -435,15 +458,39 @@ Types are included. If autocomplete does not appear after install:
 
 ### Toasts are unstyled
 
-Tailwind is required for the UI. Ensure Tailwind is installed and enabled in Nuxt, and that your build is scanning runtime classes.
+**Cause:** Tailwind CSS is not properly configured.
+
+**Solution:**
+
+- Ensure Tailwind is installed (either `@tailwindcss/vite` or `@nuxtjs/tailwindcss`)
+- Check that Tailwind is in your `modules` array (for @nuxtjs/tailwindcss)
+- Verify your CSS file imports Tailwind: `@import "tailwindcss"`
 
 ### Icons are missing
 
-Install `@nuxt/icon`:
+**Cause:** `@nuxt/icon` is not installed.
+
+**Solution:**
 
 ```bash
 npx nuxi@latest module add icon
 ```
+
+### Module detection issues
+
+The module will log which Tailwind setup it detects:
+
+```
+ℹ [nuxt-notify] Using Tailwind CSS via @nuxtjs/tailwindcss
+```
+
+or
+
+```
+ℹ [nuxt-notify] Using Tailwind CSS via Vite plugin
+```
+
+If you see a different message, check your Tailwind installation.
 
 ---
 
@@ -457,3 +504,9 @@ MIT
 
 **Nizam Omer** (`nizaamomer`)  
 Website: https://www.nizaamomer.com
+
+---
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request on [GitHub](https://github.com/nizaamomer/nuxt-notify).
