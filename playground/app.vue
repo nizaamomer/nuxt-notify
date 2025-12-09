@@ -1,375 +1,381 @@
 <template>
-  <div
-    class="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100"
-  >
-    <!-- Top bar (Nuxt-like) -->
-    <header
-      class="sticky top-0 z-10 border-b border-gray-200/70 bg-white/70 backdrop-blur dark:border-gray-800/70 dark:bg-gray-950/60"
+  <div>
+    <div
+      class="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100"
     >
-      <div
-        class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4"
+      <!-- Top bar (Nuxt-like) -->
+      <header
+        class="sticky top-0 z-10 border-b border-gray-200/70 bg-white/70 backdrop-blur dark:border-gray-800/70 dark:bg-gray-950/60"
       >
-        <div class="flex items-center gap-3">
-          <div
-            class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-sm"
-          >
-            <Icon name="i-lucide-toast" class="h-5 w-5" />
-          </div>
-          <div>
-            <h1 class="text-lg font-semibold leading-tight">nuxt-notify</h1>
-            <p class="text-xs text-gray-600 dark:text-gray-400">
-              Tailwind + Nuxt Icon toast notifications
-            </p>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <!-- Theme switch -->
-          <div
-            class="hidden sm:flex items-center gap-1 rounded-xl border border-gray-200 bg-white p-1 dark:border-gray-800 dark:bg-gray-900"
-          >
-            <button
-              class="seg"
-              :class="{ 'seg-active': theme === 'dark' }"
-              @click="setTheme('dark')"
-            >
-              <Icon name="i-lucide-moon" class="h-4 w-4" />
-              <span class="hidden md:inline">Dark</span>
-            </button>
-            <button
-              class="seg"
-              :class="{ 'seg-active': theme === 'light' }"
-              @click="setTheme('light')"
-            >
-              <Icon name="i-lucide-sun" class="h-4 w-4" />
-              <span class="hidden md:inline">Light</span>
-            </button>
-            <button
-              class="seg"
-              :class="{ 'seg-active': theme === 'system' }"
-              @click="setTheme('system')"
-            >
-              <Icon name="i-lucide-monitor" class="h-4 w-4" />
-              <span class="hidden md:inline">System</span>
-            </button>
-          </div>
-
-          <!-- Links (optional) -->
-          <a
-            class="btn-ghost"
-            href="https://github.com/nizaamomer/nuxt-notify"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Icon name="i-lucide-github" class="h-4 w-4" />
-            <span class="hidden sm:inline">GitHub</span>
-          </a>
-        </div>
-      </div>
-    </header>
-
-    <main class="mx-auto max-w-6xl px-4 py-10">
-      <!-- Hero -->
-      <section class="mb-10">
         <div
-          class="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+          class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4"
         >
-          <div
-            class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
-          >
-            <div>
-              <h2 class="text-2xl font-semibold tracking-tight">
-                Modern toast notifications for Nuxt
-              </h2>
-              <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Position, duration, max stack, theme, icons, avatars, actions,
-                and per-toast UI overrides.
-              </p>
-            </div>
-
-            <div class="flex flex-wrap gap-2">
-              <span class="badge">position: {{ notifyCfg.position }}</span>
-              <span class="badge">duration: {{ notifyCfg.duration }}ms</span>
-              <span class="badge">maxToasts: {{ notifyCfg.maxToasts }}</span>
-              <span class="badge">theme: {{ notifyCfg.theme }}</span>
-              <span class="badge">showIcon: {{ notifyCfg.showIcon }}</span>
-            </div>
-          </div>
-
-          <!-- Controls row -->
-          <div class="mt-6 grid gap-4 md:grid-cols-3">
-            <!-- Theme controls (mobile visible too) -->
+          <div class="flex items-center gap-3">
             <div
-              class="rounded-2xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-950"
+              class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-sm"
             >
-              <div class="flex items-center justify-between">
-                <h3 class="text-sm font-semibold">Theme</h3>
-                <span class="text-xs text-gray-500 dark:text-gray-400"
-                  >demo toggle</span
-                >
-              </div>
-              <div class="mt-3 flex flex-wrap gap-2">
-                <button class="btn-soft" @click="setTheme('dark')">
-                  <Icon name="i-lucide-moon" class="h-4 w-4" /> Dark
-                </button>
-                <button class="btn-soft" @click="setTheme('light')">
-                  <Icon name="i-lucide-sun" class="h-4 w-4" /> Light
-                </button>
-                <button class="btn-soft" @click="setTheme('system')">
-                  <Icon name="i-lucide-monitor" class="h-4 w-4" /> System
-                </button>
-              </div>
-              <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">
-                This demo toggles <code class="code">html.dark</code>. In real
-                apps, set <code class="code">notify.theme</code> in
-                <code class="code">nuxt.config</code>.
-              </p>
+              <Icon name="i-lucide-toast" class="h-5 w-5" />
             </div>
-
-            <!-- Direction controls -->
-            <div
-              class="rounded-2xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-950"
-            >
-              <div class="flex items-center justify-between">
-                <h3 class="text-sm font-semibold">Direction</h3>
-                <span class="text-xs text-gray-500 dark:text-gray-400"
-                  >RTL / LTR</span
-                >
-              </div>
-              <div class="mt-3 flex flex-wrap gap-2">
-                <button class="btn-soft" @click="setDir('ltr')">
-                  <Icon name="i-lucide-arrow-right-left" class="h-4 w-4" />
-                  LTR
-                </button>
-                <button class="btn-soft" @click="setDir('rtl')">
-                  <Icon name="i-lucide-arrow-left-right" class="h-4 w-4" />
-                  RTL
-                </button>
-              </div>
-              <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">
-                Changes <code class="code">document.documentElement.dir</code>.
-                Useful to verify layout in RTL languages.
-              </p>
-            </div>
-
-            <!-- Icon toggle (showIcon case) -->
-            <div
-              class="rounded-2xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-950"
-            >
-              <div class="flex items-center justify-between">
-                <h3 class="text-sm font-semibold">Icons</h3>
-                <span class="text-xs text-gray-500 dark:text-gray-400"
-                  >global + per-toast</span
-                >
-              </div>
-
-              <div class="mt-3 flex flex-wrap items-center gap-2">
-                <button class="btn-soft" @click="toggleIcons()">
-                  <Icon
-                    :name="iconsEnabled ? 'i-lucide-eye' : 'i-lucide-eye-off'"
-                    class="h-4 w-4"
-                  />
-                  {{ iconsEnabled ? "Icons ON (demo)" : "Icons OFF (demo)" }}
-                </button>
-
-                <button class="btn-ghost" @click="demoIconOverrides()">
-                  <Icon name="i-lucide-sliders-horizontal" class="h-4 w-4" />
-                  Show override demo
-                </button>
-              </div>
-
-              <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">
-                In real usage: <code class="code">notify.showIcon</code> in Nuxt
-                config. Per-toast: <code class="code">showIcon: false</code>.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Grid -->
-      <section class="grid gap-6 md:grid-cols-2">
-        <!-- Basic -->
-        <div class="panel">
-          <div class="panel-head">
-            <h3 class="panel-title">Basic</h3>
-            <p class="panel-desc">Convenience helpers</p>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <button @click="showSuccess" class="btn-success">
-              <Icon name="i-lucide-circle-check" class="h-5 w-5" />
-              Success
-            </button>
-            <button @click="showError" class="btn-danger">
-              <Icon name="i-lucide-circle-x" class="h-5 w-5" />
-              Error
-            </button>
-            <button @click="showInfo" class="btn-info">
-              <Icon name="i-lucide-info" class="h-5 w-5" />
-              Info
-            </button>
-            <button @click="showWarning" class="btn-warn">
-              <Icon name="i-lucide-triangle-alert" class="h-5 w-5" />
-              Warning
-            </button>
-          </div>
-        </div>
-
-        <!-- Description -->
-        <div class="panel">
-          <div class="panel-head">
-            <h3 class="panel-title">With Description</h3>
-            <p class="panel-desc">Title + description</p>
-          </div>
-          <div class="space-y-3">
-            <button @click="showWithDescription" class="btn-primary w-full">
-              <Icon name="i-lucide-message-square" class="h-5 w-5" />
-              Show detailed toast
-            </button>
-            <button @click="showCalendarEvent" class="btn-secondary w-full">
-              <Icon name="i-lucide-calendar-days" class="h-5 w-5" />
-              Calendar event
-            </button>
-          </div>
-        </div>
-
-        <!-- Actions -->
-        <div class="panel">
-          <div class="panel-head">
-            <h3 class="panel-title">Actions</h3>
-            <p class="panel-desc">Vertical + horizontal</p>
-          </div>
-          <div class="space-y-3">
-            <button @click="showWithActionsVertical" class="btn-primary w-full">
-              <Icon name="i-lucide-zap" class="h-5 w-5" />
-              Vertical actions
-            </button>
-            <button
-              @click="showWithActionsHorizontal"
-              class="btn-secondary w-full"
-            >
-              <Icon name="i-lucide-layout-grid" class="h-5 w-5" />
-              Horizontal actions
-            </button>
-          </div>
-        </div>
-
-        <!-- Avatar -->
-        <div class="panel">
-          <div class="panel-head">
-            <h3 class="panel-title">Avatar</h3>
-            <p class="panel-desc">Image + icon + text</p>
-          </div>
-          <div class="space-y-3">
-            <button @click="showWithAvatarImage" class="btn-primary w-full">
-              <Icon name="i-lucide-user-plus" class="h-5 w-5" />
-              Avatar image
-            </button>
-            <button @click="showWithAvatarIcon" class="btn-secondary w-full">
-              <Icon name="i-lucide-bell" class="h-5 w-5" />
-              Avatar icon
-            </button>
-            <button @click="showWithAvatarText" class="btn-soft w-full">
-              <Icon name="i-lucide-a-large-small" class="h-5 w-5" />
-              Avatar text
-            </button>
-          </div>
-        </div>
-
-        <!-- Options -->
-        <div class="panel">
-          <div class="panel-head">
-            <h3 class="panel-title">Options</h3>
-            <p class="panel-desc">Progress, duration, callback</p>
-          </div>
-          <div class="space-y-3">
-            <button @click="showNoProgress" class="btn-soft w-full">
-              <Icon name="i-lucide-loader-circle" class="h-5 w-5" />
-              No progress bar
-            </button>
-            <button @click="showLongDuration" class="btn-soft w-full">
-              <Icon name="i-lucide-clock" class="h-5 w-5" />
-              Long duration (10s)
-            </button>
-            <button @click="showClickableToast" class="btn-soft w-full">
-              <Icon name="i-lucide-mouse-pointer-click" class="h-5 w-5" />
-              Click callback
-            </button>
-          </div>
-        </div>
-
-        <!-- Custom UI -->
-        <div class="panel">
-          <div class="panel-head">
-            <h3 class="panel-title">Custom UI</h3>
-            <p class="panel-desc">Per-toast Tailwind overrides</p>
-          </div>
-          <div class="space-y-3">
-            <button @click="showCustomUiGlass" class="btn-primary w-full">
-              <Icon name="i-lucide-sparkles" class="h-5 w-5" />
-              Glass UI
-            </button>
-            <button @click="showCustomUiCompact" class="btn-secondary w-full">
-              <Icon name="i-lucide-align-left" class="h-5 w-5" />
-              Compact UI
-            </button>
-            <button @click="showCustomUiDanger" class="btn-danger w-full">
-              <Icon name="i-lucide-shield-alert" class="h-5 w-5" />
-              Critical UI
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Multiple + code -->
-      <section class="mt-8">
-        <div
-          class="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-gray-900"
-        >
-          <div
-            class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
-          >
             <div>
-              <h3 class="text-xl font-semibold">Multiple toasts</h3>
-              <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Demonstrates stacking + maxToasts trimming.
+              <h1 class="text-lg font-semibold leading-tight">nuxt-notify</h1>
+              <p class="text-xs text-gray-600 dark:text-gray-400">
+                Tailwind + Nuxt Icon toast notifications
               </p>
-            </div>
-
-            <div class="flex flex-wrap gap-2">
-              <button @click="showMultiple" class="btn-primary">
-                <Icon name="i-lucide-layers" class="h-5 w-5" />
-                Show multiple
-              </button>
-              <button @click="toast.clear()" class="btn-danger">
-                <Icon name="i-lucide-trash-2" class="h-5 w-5" />
-                Clear all
-              </button>
             </div>
           </div>
 
-          <div class="mt-6 grid gap-6 md:grid-cols-2">
-            <div>
-              <h4
-                class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2"
+          <div class="flex items-center gap-2">
+            <!-- Theme switch -->
+            <div
+              class="hidden sm:flex items-center gap-1 rounded-xl border border-gray-200 bg-white p-1 dark:border-gray-800 dark:bg-gray-900"
+            >
+              <button
+                class="seg"
+                :class="{ 'seg-active': theme === 'dark' }"
+                @click="setTheme('dark')"
               >
-                Basic usage
-              </h4>
-              <pre class="codeblock"><code>const toast = useToast()
+                <Icon name="i-lucide-moon" class="h-4 w-4" />
+                <span class="hidden md:inline">Dark</span>
+              </button>
+              <button
+                class="seg"
+                :class="{ 'seg-active': theme === 'light' }"
+                @click="setTheme('light')"
+              >
+                <Icon name="i-lucide-sun" class="h-4 w-4" />
+                <span class="hidden md:inline">Light</span>
+              </button>
+              <button
+                class="seg"
+                :class="{ 'seg-active': theme === 'system' }"
+                @click="setTheme('system')"
+              >
+                <Icon name="i-lucide-monitor" class="h-4 w-4" />
+                <span class="hidden md:inline">System</span>
+              </button>
+            </div>
+
+            <!-- Links (optional) -->
+            <a
+              class="btn-ghost"
+              href="https://github.com/nizaamomer/nuxt-notify"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Icon name="i-lucide-github" class="h-4 w-4" />
+              <span class="hidden sm:inline">GitHub</span>
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <main class="mx-auto max-w-6xl px-4 py-10">
+        <!-- Hero -->
+        <section class="mb-10">
+          <div
+            class="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+          >
+            <div
+              class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+            >
+              <div>
+                <h2 class="text-2xl font-semibold tracking-tight">
+                  Modern toast notifications for Nuxt
+                </h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                  Position, duration, max stack, theme, icons, avatars, actions,
+                  and per-toast UI overrides.
+                </p>
+              </div>
+
+              <div class="flex flex-wrap gap-2">
+                <span class="badge">position: {{ notifyCfg.position }}</span>
+                <span class="badge">duration: {{ notifyCfg.duration }}ms</span>
+                <span class="badge">maxToasts: {{ notifyCfg.maxToasts }}</span>
+                <span class="badge">theme: {{ notifyCfg.theme }}</span>
+                <span class="badge">showIcon: {{ notifyCfg.showIcon }}</span>
+              </div>
+            </div>
+
+            <!-- Controls row -->
+            <div class="mt-6 grid gap-4 md:grid-cols-3">
+              <!-- Theme controls (mobile visible too) -->
+              <div
+                class="rounded-2xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-950"
+              >
+                <div class="flex items-center justify-between">
+                  <h3 class="text-sm font-semibold">Theme</h3>
+                  <span class="text-xs text-gray-500 dark:text-gray-400"
+                    >demo toggle</span
+                  >
+                </div>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  <button class="btn-soft" @click="setTheme('dark')">
+                    <Icon name="i-lucide-moon" class="h-4 w-4" /> Dark
+                  </button>
+                  <button class="btn-soft" @click="setTheme('light')">
+                    <Icon name="i-lucide-sun" class="h-4 w-4" /> Light
+                  </button>
+                  <button class="btn-soft" @click="setTheme('system')">
+                    <Icon name="i-lucide-monitor" class="h-4 w-4" /> System
+                  </button>
+                </div>
+                <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">
+                  This demo toggles <code class="code">html.dark</code>. In real
+                  apps, set <code class="code">notify.theme</code> in
+                  <code class="code">nuxt.config</code>.
+                </p>
+              </div>
+
+              <!-- Direction controls -->
+              <div
+                class="rounded-2xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-950"
+              >
+                <div class="flex items-center justify-between">
+                  <h3 class="text-sm font-semibold">Direction</h3>
+                  <span class="text-xs text-gray-500 dark:text-gray-400"
+                    >RTL / LTR</span
+                  >
+                </div>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  <button class="btn-soft" @click="setDir('ltr')">
+                    <Icon name="i-lucide-arrow-right-left" class="h-4 w-4" />
+                    LTR
+                  </button>
+                  <button class="btn-soft" @click="setDir('rtl')">
+                    <Icon name="i-lucide-arrow-left-right" class="h-4 w-4" />
+                    RTL
+                  </button>
+                </div>
+                <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">
+                  Changes
+                  <code class="code">document.documentElement.dir</code>. Useful
+                  to verify layout in RTL languages.
+                </p>
+              </div>
+
+              <!-- Icon toggle (showIcon case) -->
+              <div
+                class="rounded-2xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-950"
+              >
+                <div class="flex items-center justify-between">
+                  <h3 class="text-sm font-semibold">Icons</h3>
+                  <span class="text-xs text-gray-500 dark:text-gray-400"
+                    >global + per-toast</span
+                  >
+                </div>
+
+                <div class="mt-3 flex flex-wrap items-center gap-2">
+                  <button class="btn-soft" @click="toggleIcons()">
+                    <Icon
+                      :name="iconsEnabled ? 'i-lucide-eye' : 'i-lucide-eye-off'"
+                      class="h-4 w-4"
+                    />
+                    {{ iconsEnabled ? "Icons ON (demo)" : "Icons OFF (demo)" }}
+                  </button>
+
+                  <button class="btn-ghost" @click="demoIconOverrides()">
+                    <Icon name="i-lucide-sliders-horizontal" class="h-4 w-4" />
+                    Show override demo
+                  </button>
+                </div>
+
+                <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">
+                  In real usage: <code class="code">notify.showIcon</code> in
+                  Nuxt config. Per-toast:
+                  <code class="code">showIcon: false</code>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Grid -->
+        <section class="grid gap-6 md:grid-cols-2">
+          <!-- Basic -->
+          <div class="panel">
+            <div class="panel-head">
+              <h3 class="panel-title">Basic</h3>
+              <p class="panel-desc">Convenience helpers</p>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <button @click="showSuccess" class="btn-success">
+                <Icon name="i-lucide-circle-check" class="h-5 w-5" />
+                Success
+              </button>
+              <button @click="showError" class="btn-danger">
+                <Icon name="i-lucide-circle-x" class="h-5 w-5" />
+                Error
+              </button>
+              <button @click="showInfo" class="btn-info">
+                <Icon name="i-lucide-info" class="h-5 w-5" />
+                Info
+              </button>
+              <button @click="showWarning" class="btn-warn">
+                <Icon name="i-lucide-triangle-alert" class="h-5 w-5" />
+                Warning
+              </button>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="panel">
+            <div class="panel-head">
+              <h3 class="panel-title">With Description</h3>
+              <p class="panel-desc">Title + description</p>
+            </div>
+            <div class="space-y-3">
+              <button @click="showWithDescription" class="btn-primary w-full">
+                <Icon name="i-lucide-message-square" class="h-5 w-5" />
+                Show detailed toast
+              </button>
+              <button @click="showCalendarEvent" class="btn-secondary w-full">
+                <Icon name="i-lucide-calendar-days" class="h-5 w-5" />
+                Calendar event
+              </button>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="panel">
+            <div class="panel-head">
+              <h3 class="panel-title">Actions</h3>
+              <p class="panel-desc">Vertical + horizontal</p>
+            </div>
+            <div class="space-y-3">
+              <button
+                @click="showWithActionsVertical"
+                class="btn-primary w-full"
+              >
+                <Icon name="i-lucide-zap" class="h-5 w-5" />
+                Vertical actions
+              </button>
+              <button
+                @click="showWithActionsHorizontal"
+                class="btn-secondary w-full"
+              >
+                <Icon name="i-lucide-layout-grid" class="h-5 w-5" />
+                Horizontal actions
+              </button>
+            </div>
+          </div>
+
+          <!-- Avatar -->
+          <div class="panel">
+            <div class="panel-head">
+              <h3 class="panel-title">Avatar</h3>
+              <p class="panel-desc">Image + icon + text</p>
+            </div>
+            <div class="space-y-3">
+              <button @click="showWithAvatarImage" class="btn-primary w-full">
+                <Icon name="i-lucide-user-plus" class="h-5 w-5" />
+                Avatar image
+              </button>
+              <button @click="showWithAvatarIcon" class="btn-secondary w-full">
+                <Icon name="i-lucide-bell" class="h-5 w-5" />
+                Avatar icon
+              </button>
+              <button @click="showWithAvatarText" class="btn-soft w-full">
+                <Icon name="i-lucide-a-large-small" class="h-5 w-5" />
+                Avatar text
+              </button>
+            </div>
+          </div>
+
+          <!-- Options -->
+          <div class="panel">
+            <div class="panel-head">
+              <h3 class="panel-title">Options</h3>
+              <p class="panel-desc">Progress, duration, callback</p>
+            </div>
+            <div class="space-y-3">
+              <button @click="showNoProgress" class="btn-soft w-full">
+                <Icon name="i-lucide-loader-circle" class="h-5 w-5" />
+                No progress bar
+              </button>
+              <button @click="showLongDuration" class="btn-soft w-full">
+                <Icon name="i-lucide-clock" class="h-5 w-5" />
+                Long duration (10s)
+              </button>
+              <button @click="showClickableToast" class="btn-soft w-full">
+                <Icon name="i-lucide-mouse-pointer-click" class="h-5 w-5" />
+                Click callback
+              </button>
+            </div>
+          </div>
+
+          <!-- Custom UI -->
+          <div class="panel">
+            <div class="panel-head">
+              <h3 class="panel-title">Custom UI</h3>
+              <p class="panel-desc">Per-toast Tailwind overrides</p>
+            </div>
+            <div class="space-y-3">
+              <button @click="showCustomUiGlass" class="btn-primary w-full">
+                <Icon name="i-lucide-sparkles" class="h-5 w-5" />
+                Glass UI
+              </button>
+              <button @click="showCustomUiCompact" class="btn-secondary w-full">
+                <Icon name="i-lucide-align-left" class="h-5 w-5" />
+                Compact UI
+              </button>
+              <button @click="showCustomUiDanger" class="btn-danger w-full">
+                <Icon name="i-lucide-shield-alert" class="h-5 w-5" />
+                Critical UI
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Multiple + code -->
+        <section class="mt-8">
+          <div
+            class="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+          >
+            <div
+              class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+            >
+              <div>
+                <h3 class="text-xl font-semibold">Multiple toasts</h3>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                  Demonstrates stacking + maxToasts trimming.
+                </p>
+              </div>
+
+              <div class="flex flex-wrap gap-2">
+                <button @click="showMultiple" class="btn-primary">
+                  <Icon name="i-lucide-layers" class="h-5 w-5" />
+                  Show multiple
+                </button>
+                <button @click="toast.clear()" class="btn-danger">
+                  <Icon name="i-lucide-trash-2" class="h-5 w-5" />
+                  Clear all
+                </button>
+              </div>
+            </div>
+
+            <div class="mt-6 grid gap-6 md:grid-cols-2">
+              <div>
+                <h4
+                  class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2"
+                >
+                  Basic usage
+                </h4>
+                <pre class="codeblock"><code>const toast = useToast()
 
 toast.success('Success!')
 toast.error('Error!')
 toast.info('Information')
 toast.warning('Warning!')</code></pre>
-            </div>
+              </div>
 
-            <div>
-              <h4
-                class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2"
-              >
-                Disable icons
-              </h4>
-              <pre class="codeblock"><code>// nuxt.config.ts
+              <div>
+                <h4
+                  class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2"
+                >
+                  Disable icons
+                </h4>
+                <pre class="codeblock"><code>// nuxt.config.ts
 export default defineNuxtConfig({
   modules: ['nuxt-notify'],
   notify: {
@@ -382,11 +388,12 @@ toast.add({
   title: 'No icon',
   showIcon: false
 })</code></pre>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
+      </main>
+    </div>
   </div>
 </template>
 

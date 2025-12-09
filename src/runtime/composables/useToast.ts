@@ -51,7 +51,7 @@ export const useToast = () => {
     const index = toasts.value.findIndex((t) => t.id === id);
     if (index > -1) {
       const toast = toasts.value[index];
-      if (toast?.callback) toast.callback();
+      // if (toast?.callback) toast.callback();
       toasts.value.splice(index, 1);
     }
   };

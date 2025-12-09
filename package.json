@@ -30,6 +30,9 @@
   ],
   "type": "module",
   "sideEffects": false,
+  "main": "./dist/module.mjs",
+  "module": "./dist/module.mjs",
+  "types": "./dist/types.d.mts",
   "exports": {
     ".": {
       "types": "./dist/types.d.mts",
@@ -53,14 +56,13 @@
     "release": "npm run prepack && npm publish"
   },
   "peerDependencies": {
+    "@nuxt/kit": "^3.0.0 || ^4.0.0",
     "nuxt": "^3.0.0 || ^4.0.0"
-  },
-  "dependencies": {
-    "@nuxt/kit": "^3.0.0 || ^4.0.0"
   },
   "devDependencies": {
     "@nuxt/devtools": "^3.1.1",
     "@nuxt/eslint-config": "^1.11.0",
+    "@nuxt/kit": "^4.2.1",
     "@nuxt/module-builder": "^1.0.2",
     "@nuxt/schema": "^4.2.1",
     "@types/node": "latest",

@@ -24,9 +24,9 @@ const containerClasses = computed(() => {
       (config.public.notify as Record<string, any>).position) ||
     "top-right";
   const baseClasses =
-    "fixed pointer-events-none w-full max-w-md sm:max-w-sm md:max-w-md";
+    "fixed pointer-events-none w-full max-w-md sm:max-w-sm md:max-w-md flex flex-col";
 
-  const zIndexClass = "z-[99999]"; // Very high z-index
+  const zIndexClass = "z-[99999]";
   const paddingClass = "p-4";
 
   const positionClasses = {
@@ -46,29 +46,3 @@ const containerClasses = computed(() => {
   ].join(" ");
 });
 </script>
-
-<style scoped>
-.toast-enter-active {
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  pointer-events: auto;
-}
-
-.toast-leave-active {
-  transition: all 0.3s ease;
-  pointer-events: auto;
-}
-
-.toast-enter-from {
-  opacity: 0;
-  transform: translateX(100%) scale(0.8);
-}
-
-.toast-leave-to {
-  opacity: 0;
-  transform: translateX(100%) scale(0.8);
-}
-
-.toast-move {
-  transition: transform 0.3s ease;
-}
-</style>

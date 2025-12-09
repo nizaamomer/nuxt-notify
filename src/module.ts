@@ -1,10 +1,10 @@
-// module.ts
 import {
   defineNuxtModule,
   addPlugin,
   createResolver,
   addComponent,
   addImportsDir,
+  resolvePath,
 } from "@nuxt/kit";
 
 export interface ModuleOptions {
@@ -19,7 +19,17 @@ export interface ModuleOptions {
   maxToasts?: number;
   theme?: "dark" | "light" | "system";
   showIcon?: boolean;
+  strict?: boolean;
 }
+
+const pkgExists = async (pkg: string, cwd: string) => {
+  try {
+    await resolvePath(pkg, { cwd });
+    return true;
+  } catch {
+    return false;
+  }
+};
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -33,49 +43,74 @@ export default defineNuxtModule<ModuleOptions>({
     maxToasts: 5,
     theme: "dark",
     showIcon: true,
+    strict: true,
   },
+
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url);
+    const root = nuxt.options.rootDir;
 
-    const modules = nuxt.options.modules || [];
-    const hasModule = (name: string) =>
-      modules.some((m: any) => (Array.isArray(m) ? m[0] : m) === name);
+    // --- Tailwind content auto-registration ---
+    nuxt.hook("tailwindcss:config" as any, function (tailwindConfig: any) {
+      // Ensure content exists and is an array
+      if (!tailwindConfig.content) {
+        tailwindConfig.content = [];
+      }
 
-    const hasTailwind =
-      hasModule("@nuxtjs/tailwindcss") || hasModule("@tailwindcss/vite");
-    const hasNuxtIcon = hasModule("@nuxt/icon");
-
-    // Tailwind integration (only if present)
-    if (hasTailwind) {
-      nuxt.hook("tailwindcss:config" as any, (tailwindConfig: any) => {
-        const runtimeGlob = resolver.resolve("./runtime/**/*.{vue,js,ts,mjs}");
-
-        const content = tailwindConfig.content;
-        if (Array.isArray(content)) content.push(runtimeGlob);
-        else if (content && Array.isArray(content.files))
-          content.files.push(runtimeGlob);
-        else tailwindConfig.content = [runtimeGlob];
-
-        if (!tailwindConfig.darkMode) tailwindConfig.darkMode = "class";
-      });
-    } else {
-      nuxt.hook("ready", () => {
-        console.warn(
-          "[nuxt-notify] Tailwind CSS not found. Toast styles may look different."
+      // Handle both array and object formats
+      if (Array.isArray(tailwindConfig.content)) {
+        tailwindConfig.content.push(
+          resolver.resolve("./runtime/components/**/*.{vue,js,ts}"),
+          resolver.resolve("./runtime/composables/**/*.{js,ts}"),
+          resolver.resolve("./runtime/plugin.{js,ts}")
         );
-      });
+      } else if (
+        typeof tailwindConfig.content === "object" &&
+        tailwindConfig.content.files
+      ) {
+        // Tailwind v3+ object format
+        if (!Array.isArray(tailwindConfig.content.files)) {
+          tailwindConfig.content.files = [];
+        }
+        tailwindConfig.content.files.push(
+          resolver.resolve("./runtime/components/**/*.{vue,js,ts}"),
+          resolver.resolve("./runtime/composables/**/*.{js,ts}"),
+          resolver.resolve("./runtime/plugin.{js,ts}")
+        );
+      }
+    });
+
+    // --- Dependency checks ---
+    const hasTailwind = await pkgExists("tailwindcss", root);
+    const hasNuxtTailwind = await pkgExists("@nuxtjs/tailwindcss", root);
+
+    const wantsIcons = options.showIcon !== false;
+    const hasNuxtIcon = wantsIcons ? await pkgExists("@nuxt/icon", root) : true;
+
+    const missing: string[] = [];
+
+    if (!hasTailwind && !hasNuxtTailwind) {
+      missing.push(
+        "Tailwind is required. Install: `npm i -D @nuxtjs/tailwindcss`"
+      );
     }
 
-    // Icon integration (only if present)
     if (!hasNuxtIcon) {
-      nuxt.hook("ready", () => {
-        console.warn(
-          "[nuxt-notify] @nuxt/icon not found. Toast icons will be hidden."
-        );
-      });
+      missing.push(
+        "@nuxt/icon is required when `notify.showIcon` is enabled. Install: `npx nuxi@latest module add icon`"
+      );
     }
 
-    // Runtime config
+    if (missing.length) {
+      const message =
+        `[nuxt-notify] Missing required dependencies:\n` +
+        missing.map((m) => `- ${m}`).join("\n");
+
+      if (options.strict !== false) throw new Error(message);
+      console.warn(message);
+    }
+
+    // --- Runtime config ---
     nuxt.options.runtimeConfig.public.notify = {
       position: options.position,
       duration: options.duration,
@@ -84,8 +119,10 @@ export default defineNuxtModule<ModuleOptions>({
       showIcon: options.showIcon,
     };
 
+    // --- Auto-import composables ---
     addImportsDir(resolver.resolve("./runtime/composables"));
 
+    // --- Components ---
     addComponent({
       name: "ToastContainer",
       filePath: resolver.resolve("./runtime/components/ToastContainer.vue"),
@@ -97,6 +134,7 @@ export default defineNuxtModule<ModuleOptions>({
       filePath: resolver.resolve("./runtime/components/Toast.vue"),
     });
 
+    // --- Plugin ---
     addPlugin(resolver.resolve("./runtime/plugin"));
   },
 });
