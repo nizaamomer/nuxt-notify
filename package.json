@@ -1,6 +1,6 @@
 {
   "name": "nuxt-notify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Advanced toast notifications for Nuxt 3/4 with Tailwind CSS + Nuxt Icon (actions, avatars, progress, themes, UI overrides).",
   "license": "MIT",
   "author": "Nizam Omer (nizaamomer) - https://www.nizaamomer.com",
@@ -25,8 +25,10 @@
     "notifications",
     "toastify",
     "tailwindcss",
+    "tailwind",
     "nuxt-icon",
-    "vue"
+    "vue",
+    "vue3"
   ],
   "type": "module",
   "sideEffects": false,
@@ -58,6 +60,14 @@
   "peerDependencies": {
     "@nuxt/kit": "^3.0.0 || ^4.0.0",
     "nuxt": "^3.0.0 || ^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@nuxtjs/tailwindcss": {
+      "optional": true
+    },
+    "@tailwindcss/vite": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@nuxt/devtools": "^3.1.1",
