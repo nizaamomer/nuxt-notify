@@ -3,7 +3,7 @@ import {
   addPlugin,
   createResolver,
   addComponent,
-  addImportsDir,
+  addImports,
   resolvePath,
 } from "@nuxt/kit";
 
@@ -163,8 +163,14 @@ export default defineNuxtModule<ModuleOptions>({
       showIcon: options.showIcon,
     };
 
-    // Auto-import composables
-    addImportsDir(resolver.resolve("./runtime/composables"));
+    // Auto-import composables (explicit to avoid .js/.mjs duplicate warning)
+    addImports([
+      {
+        name: "useToast", // named export in runtime/composables/useToast
+        as: "useToast", // how it will be used in user code
+        from: resolver.resolve("./runtime/composables/useToast"),
+      },
+    ]);
 
     // Register components
     addComponent({

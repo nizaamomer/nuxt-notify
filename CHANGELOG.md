@@ -7,6 +7,14 @@ This project follows **Semantic Versioning (SemVer)**:
 
 ---
 
+## [1.1.2] – 2025-12-12
+
+### Fixed
+
+- Removed duplicate auto-import warning for `useToast` by switching to explicit `addImports` registration.
+
+---
+
 ## [1.1.1] – 2025-12-12
 
 ### Added
