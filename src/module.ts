@@ -5,7 +5,6 @@ import {
   addComponent,
   addImportsDir,
   resolvePath,
-  addVitePlugin,
 } from "@nuxt/kit";
 
 export interface ModuleOptions {
@@ -50,11 +49,9 @@ export default defineNuxtModule<ModuleOptions>({
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url);
     const root = nuxt.options.rootDir;
-
-    // Detect if we're in the module's own build process (stub mode)
     const isModuleBuild = root === process.cwd();
 
-    // --- Detect Tailwind setup ---
+    // Detect dependencies
     const hasTailwind = await pkgExists("tailwindcss", root);
     const hasTailwindVite = await pkgExists("@tailwindcss/vite", root);
     const hasNuxtTailwind = await pkgExists("@nuxtjs/tailwindcss", root);
@@ -63,18 +60,14 @@ export default defineNuxtModule<ModuleOptions>({
 
     const missing: string[] = [];
 
-    // Check Tailwind installation (only warn if not in module build)
-    if (!hasTailwind && !hasNuxtTailwind) {
-      if (!isModuleBuild) {
-        missing.push(
-          "Tailwind CSS is required. Install ONE of:\n" +
-            "  - Tailwind via Vite plugin: `npm i tailwindcss @tailwindcss/vite`\n" +
-            "  - Tailwind via Nuxt module: `npm i -D @nuxtjs/tailwindcss`"
-        );
-      }
+    if (!hasTailwind && !hasNuxtTailwind && !isModuleBuild) {
+      missing.push(
+        "Tailwind CSS is required. Install ONE of:\n" +
+          "  - Tailwind via Vite plugin: `npm i tailwindcss @tailwindcss/vite`\n" +
+          "  - Tailwind via Nuxt module: `npm i -D @nuxtjs/tailwindcss`"
+      );
     }
 
-    // Check icon dependency
     if (!hasNuxtIcon) {
       missing.push(
         "@nuxt/icon is required when `notify.showIcon` is enabled.\n" +
@@ -91,7 +84,7 @@ export default defineNuxtModule<ModuleOptions>({
       console.warn(message);
     }
 
-    // --- Check if @nuxtjs/tailwindcss is actually in the modules array ---
+    // Check if @nuxtjs/tailwindcss is in modules array
     const isNuxtTailwindActive = nuxt.options.modules.some((mod) => {
       if (typeof mod === "string") {
         return (
@@ -101,16 +94,20 @@ export default defineNuxtModule<ModuleOptions>({
       return false;
     });
 
-    // Use Tailwind via Vite if @tailwindcss/vite is installed AND @nuxtjs/tailwindcss is NOT in modules
     const usingTailwindVite = hasTailwindVite && !isNuxtTailwindActive;
 
-    // Only log in actual project, not during module build
+    // Log detection result
     if (!isModuleBuild) {
       if (usingTailwindVite) {
         console.info("[nuxt-notify] Using Tailwind CSS via Vite plugin");
+        console.info(
+          "[nuxt-notify] 📝 Add this to your CSS file:\n" +
+            '  @import "tailwindcss";\n' +
+            '  @import "nuxt-notify/styles";'
+        );
       } else if (isNuxtTailwindActive) {
         console.info(
-          "[nuxt-notify] Using Tailwind CSS via @nuxtjs/tailwindcss"
+          "[nuxt-notify] Using Tailwind CSS via @nuxtjs/tailwindcss (auto-configured ✅)"
         );
       } else if (hasTailwind || hasNuxtTailwind) {
         console.warn(
@@ -125,26 +122,9 @@ export default defineNuxtModule<ModuleOptions>({
       }
     }
 
-    if (usingTailwindVite) {
-      // === TAILWIND VIA VITE PLUGIN ===
-      try {
-        // @ts-expect-error - Optional dependency, installed by users
-        const tailwindVite = await import("@tailwindcss/vite").then(
-          (r) => r.default
-        );
-        addVitePlugin(tailwindVite());
-      } catch (error) {
-        // Silent - warning already shown above if needed
-      }
-
-      // Add runtime CSS with @source directive for component scanning
-      nuxt.options.css.push(resolver.resolve("./runtime/assets/css/main.css"));
-    } else if (isNuxtTailwindActive) {
-      // === TAILWIND VIA NUXT MODULE ===
-
-      // Hook into Tailwind config to add content paths
+    if (isNuxtTailwindActive) {
+      // Tailwind v3 via @nuxtjs/tailwindcss - add content paths (fully automatic)
       nuxt.hook("tailwindcss:config" as any, function (tailwindConfig: any) {
-        // Ensure content exists and is an array
         if (!tailwindConfig.content) {
           tailwindConfig.content = [];
         }
@@ -155,28 +135,26 @@ export default defineNuxtModule<ModuleOptions>({
           resolver.resolve("./runtime/plugin.{js,ts}"),
         ];
 
-        // Handle both array and object formats
         if (Array.isArray(tailwindConfig.content)) {
           tailwindConfig.content.push(...paths);
         } else if (
           typeof tailwindConfig.content === "object" &&
           tailwindConfig.content.files
         ) {
-          // Tailwind v3+ object format
           if (!Array.isArray(tailwindConfig.content.files)) {
             tailwindConfig.content.files = [];
           }
           tailwindConfig.content.files.push(...paths);
         }
       });
-
-      // Add transition styles separately for @nuxtjs/tailwindcss
-      nuxt.options.css.push(
-        resolver.resolve("./runtime/assets/css/transitions.css")
-      );
     }
 
-    // --- Runtime config ---
+    // Add transitions CSS
+    nuxt.options.css.push(
+      resolver.resolve("./runtime/assets/css/transitions.css")
+    );
+
+    // Runtime config
     nuxt.options.runtimeConfig.public.notify = {
       position: options.position,
       duration: options.duration,
@@ -185,10 +163,10 @@ export default defineNuxtModule<ModuleOptions>({
       showIcon: options.showIcon,
     };
 
-    // --- Auto-import composables ---
+    // Auto-import composables
     addImportsDir(resolver.resolve("./runtime/composables"));
 
-    // --- Components ---
+    // Register components
     addComponent({
       name: "ToastContainer",
       filePath: resolver.resolve("./runtime/components/ToastContainer.vue"),
@@ -200,7 +178,7 @@ export default defineNuxtModule<ModuleOptions>({
       filePath: resolver.resolve("./runtime/components/Toast.vue"),
     });
 
-    // --- Plugin ---
+    // Register plugin
     addPlugin(resolver.resolve("./runtime/plugin"));
   },
 });

@@ -1,6 +1,6 @@
 <template>
   <li
-    :class="toastClasses"
+    :class="[toastClasses, 'nuxt-notify-toast', themeClass]"
     @click="handleClick"
     @mouseenter="pauseProgress"
     @mouseleave="resumeProgress"
@@ -92,8 +92,8 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from "vue";
-import type { Toast } from "../types/toast";
 import { useRuntimeConfig } from "nuxt/app";
+import type { Toast } from "../types/toast";
 
 const props = defineProps<{ toast: Toast }>();
 const emit = defineEmits<{ remove: [id: string] }>();
@@ -102,6 +102,7 @@ const config = useRuntimeConfig();
 const progress = ref(100);
 const isPaused = ref(false);
 let progressInterval: ReturnType<typeof setInterval> | null = null;
+
 const colorClasses: Record<string, any> = {
   primary: {
     root: "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500",
@@ -132,6 +133,7 @@ const colorClasses: Record<string, any> = {
     icon: "text-gray-900 dark:text-white",
   },
 };
+
 const progressColorClasses: Record<string, string> = {
   primary: "bg-blue-500",
   secondary: "bg-purple-500",
@@ -141,6 +143,7 @@ const progressColorClasses: Record<string, string> = {
   error: "bg-red-500",
   neutral: "bg-gray-500",
 };
+
 const cx = (...parts: Array<string | false | null | undefined>) =>
   parts.filter(Boolean).join(" ");
 
@@ -238,6 +241,12 @@ const handleAction = (action: any, event: Event) => {
     action.onClick(event);
   }
 };
+
+const themeClass = computed(() => {
+  const config = useRuntimeConfig();
+  const theme = (config.public?.notify as any)?.theme ?? "dark";
+  return theme === "dark" ? "dark" : "";
+});
 
 const close = () => {
   emit("remove", props.toast.id);

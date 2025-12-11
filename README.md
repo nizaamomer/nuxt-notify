@@ -21,18 +21,18 @@ Advanced toast notifications for **Nuxt 3 / Nuxt 4** with **Tailwind CSS** and *
 
 ## Features
 
-- Nuxt 3 / Nuxt 4 compatible
-- Auto-mounts the toast container (no manual component setup)
-- **Works with both Tailwind v4 and @nuxtjs/tailwindcss** (auto-detects setup)
-- Tailwind CSS styling (runtime files automatically scanned)
-- Nuxt Icon support
-- Positions: `top-right`, `top-left`, `bottom-right`, `bottom-left`, `top-center`, `bottom-center`
-- Options: `duration`, `maxToasts`, `theme` (`dark | light | system`)
-- Icon control: global `showIcon` + per-toast override `showIcon`
-- Actions (vertical / horizontal)
-- Avatars (image / icon / text)
-- Progress bar + pause on hover
-- Per-toast UI overrides via Tailwind classes (`ui: { root, title, ... }`)
+- ✨ Nuxt 3 / Nuxt 4 compatible
+- 🚀 Auto-mounts the toast container (no manual component setup)
+- 🎨 **Works with both Tailwind v4 and Tailwind v3** (auto-detects setup)
+- 💅 Tailwind CSS styling with automatic component scanning
+- 🎭 Nuxt Icon support
+- 📍 Multiple positions: `top-right`, `top-left`, `bottom-right`, `bottom-left`, `top-center`, `bottom-center`
+- ⚙️ Configurable: `duration`, `maxToasts`, `theme` (`dark | light | system`)
+- 🎯 Icon control: global `showIcon` + per-toast override
+- 🔘 Actions (vertical / horizontal layouts)
+- 👤 Avatars (image / icon / text)
+- ⏱️ Progress bar + pause on hover
+- 🎨 Per-toast UI overrides via Tailwind classes
 
 ---
 
@@ -56,9 +56,35 @@ npm i nuxt-notify
 
 ### 2) Tailwind CSS Setup
 
-This module **automatically detects** and works with both Tailwind CSS setups:
+Choose **ONE** of the following options based on your preference:
 
-#### Option A: Tailwind via Vite Plugin (v4+)
+#### Option A: Tailwind v3 via Nuxt Module (Recommended - Zero Config ✨)
+
+```bash
+npx nuxi@latest module add tailwindcss
+```
+
+**`nuxt.config.ts`:**
+
+```ts
+export default defineNuxtConfig({
+  modules: ["@nuxtjs/tailwindcss", "nuxt-notify"],
+});
+```
+
+**`assets/css/main.css`:**
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+✅ **That's it! The module automatically scans its components. No additional setup needed!**
+
+---
+
+#### Option B: Tailwind v4 via Vite Plugin (Advanced)
 
 ```bash
 npm install tailwindcss @tailwindcss/vite
@@ -84,43 +110,18 @@ export default defineNuxtConfig({
 
 ```css
 @import "tailwindcss";
+@import "nuxt-notify/styles"; /* Required for Tailwind v4 */
 ```
 
-✅ **No `tailwind.config` needed!** The module handles component scanning automatically.
+> ⚠️ **Important:** When using Tailwind v4, the `@import "nuxt-notify/styles";` line is **required** for proper component scanning.
 
----
-
-#### Option B: Tailwind via Nuxt Module
-
-```bash
-npm install -D @nuxtjs/tailwindcss
-```
-
-**`nuxt.config.ts`:**
-
-```ts
-export default defineNuxtConfig({
-  modules: ["@nuxtjs/tailwindcss", "nuxt-notify"],
-
-  css: ["~/assets/css/main.css"],
-});
-```
-
-**`tailwind.config.js`:**
+**`tailwind.config.js`:** (Optional - only if you need custom configuration)
 
 ```js
 module.exports = {
-  content: [
-    "./components/**/*.{js,vue,ts}",
-    "./layouts/**/*.vue",
-    "./pages/**/*.vue",
-    "./app.vue",
-  ],
   darkMode: "class",
 };
 ```
-
-✅ **The module automatically adds its components to Tailwind's content scanning.**
 
 ---
 
@@ -132,7 +133,7 @@ npx nuxi@latest module add icon
 
 ---
 
-## Setup
+## Quick Start
 
 Add the module to `nuxt.config.ts`:
 
@@ -141,15 +142,10 @@ export default defineNuxtConfig({
   modules: ["nuxt-notify"],
 
   notify: {
-    position: "bottom-left",
-    duration: 2000,
-    maxToasts: 3,
-
-    // Theme: "dark" | "light" | "system"
-    // Default: "dark"
+    position: "top-right",
+    duration: 5000,
+    maxToasts: 5,
     theme: "dark",
-
-    // Global icons toggle (default: true)
     showIcon: true,
   },
 });
@@ -161,22 +157,26 @@ That's it! The toast container is mounted automatically.
 
 ## Usage
 
-`useToast()` is auto-imported.
+`useToast()` is auto-imported:
 
-```ts
+```vue
+<script setup>
 const toast = useToast();
 
 toast.success("Saved", "Your changes were saved.");
 toast.error("Error", "Something went wrong.");
 toast.info("Heads up", "New version is available.");
 toast.warning("Careful", "This action cannot be undone.");
+</script>
 ```
 
 ---
 
-## API
+## API Reference
 
 ### `toast.add(options)`
+
+Create a custom toast:
 
 ```ts
 toast.add({
@@ -190,12 +190,16 @@ toast.add({
 
 ### `toast.remove(id)`
 
+Remove a specific toast:
+
 ```ts
 const id = toast.add({ title: "Hello" });
 toast.remove(id);
 ```
 
 ### `toast.clear()`
+
+Clear all toasts:
 
 ```ts
 toast.clear();
@@ -205,7 +209,9 @@ toast.clear();
 
 ## Configuration
 
-### Module options (`nuxt.config.ts`)
+### Module Options
+
+Configure globally in `nuxt.config.ts`:
 
 | Option      | Type                                                                                              | Default       | Description                                          |
 | ----------- | ------------------------------------------------------------------------------------------------- | ------------- | ---------------------------------------------------- |
@@ -215,24 +221,24 @@ toast.clear();
 | `theme`     | `"dark" \| "light" \| "system"`                                                                   | `"dark"`      | Theme mode                                           |
 | `showIcon`  | `boolean`                                                                                         | `true`        | Global icon enable/disable                           |
 
-### Per-toast options (commonly used)
+### Per-Toast Options
 
 ```ts
 toast.add({
   title: "Custom toast",
   description: "Per-toast configuration",
-  color: "info",
+  color: "info", // "primary" | "secondary" | "success" | "info" | "warning" | "error" | "neutral"
   icon: "i-lucide-bell",
   duration: 3000,
   progress: true,
   close: true,
-  orientation: "vertical",
+  orientation: "vertical", // "vertical" | "horizontal"
 });
 ```
 
 ---
 
-## Theme
+## Theme Configuration
 
 Set theme globally:
 
@@ -247,12 +253,12 @@ export default defineNuxtConfig({
 
 **Notes:**
 
-- `system` uses the OS theme preference
-- Your project must use Tailwind `darkMode: "class"` for theme switching via `html.dark`
+- `system` automatically uses the OS theme preference
+- Your project must use Tailwind `darkMode: "class"` for theme switching
 
 ---
 
-## Icons (global + per-toast)
+## Icon Control
 
 ### Disable icons globally
 
@@ -272,14 +278,13 @@ export default defineNuxtConfig({
 toast.add({
   title: "No icon",
   description: "This toast hides the icon",
-  icon: "i-lucide-bell",
   showIcon: false,
 });
 
 // Force icon ON (even if global is false)
 toast.add({
-  title: "Force icon",
-  description: "This toast shows an icon anyway",
+  title: "With icon",
+  description: "This toast shows an icon",
   icon: "i-lucide-bell",
   showIcon: true,
 });
@@ -289,7 +294,7 @@ toast.add({
 
 ## Actions
 
-### Vertical actions
+### Vertical Actions
 
 ```ts
 toast.add({
@@ -320,7 +325,7 @@ toast.add({
 });
 ```
 
-### Horizontal actions
+### Horizontal Actions
 
 ```ts
 toast.add({
@@ -344,11 +349,13 @@ toast.add({
 });
 ```
 
+**Action variants:** `solid`, `outline`, `soft`, `ghost`, `link`
+
 ---
 
 ## Avatars
 
-### Image avatar
+### Image Avatar
 
 ```ts
 toast.add({
@@ -362,7 +369,7 @@ toast.add({
 });
 ```
 
-### Icon avatar
+### Icon Avatar
 
 ```ts
 toast.add({
@@ -373,7 +380,7 @@ toast.add({
 });
 ```
 
-### Text avatar
+### Text Avatar
 
 ```ts
 toast.add({
@@ -386,9 +393,9 @@ toast.add({
 
 ---
 
-## Progress bar
+## Progress Bar
 
-Disable progress for a single toast:
+Disable progress for a specific toast:
 
 ```ts
 toast.add({
@@ -403,7 +410,9 @@ toast.add({
 
 ---
 
-## Click callback (click anywhere on toast)
+## Click Callback
+
+Execute a function when clicking anywhere on the toast:
 
 ```ts
 toast.add({
@@ -419,9 +428,9 @@ toast.add({
 
 ---
 
-## Custom UI (Tailwind overrides)
+## Custom Styling
 
-Override internal Tailwind classes per toast:
+Override Tailwind classes per toast:
 
 ```ts
 toast.add({
@@ -438,19 +447,29 @@ toast.add({
 });
 ```
 
-**Supported `ui` keys:**
+**Available `ui` keys:**
 
-- `root`, `wrapper`, `title`, `description`, `icon`, `avatar`, `actions`, `progress`, `close`
+- `root` - Toast container
+- `wrapper` - Content wrapper
+- `title` - Title text
+- `description` - Description text
+- `icon` - Icon element
+- `avatar` - Avatar element
+- `actions` - Actions container
+- `progress` - Progress bar
+- `close` - Close button
 
 ---
 
-## TypeScript
+## TypeScript Support
 
-Types are included. If autocomplete does not appear after install:
+Full TypeScript support with autocomplete. Types are included automatically.
 
-- Restart your IDE TypeScript server
-- Reinstall dependencies
-- Ensure you are using the latest published version
+If autocomplete doesn't work:
+
+- Restart your IDE's TypeScript server
+- Run `npm install` to ensure types are properly installed
+- Check that you're using the latest version
 
 ---
 
@@ -460,11 +479,22 @@ Types are included. If autocomplete does not appear after install:
 
 **Cause:** Tailwind CSS is not properly configured.
 
-**Solution:**
+**Solutions:**
 
-- Ensure Tailwind is installed (either `@tailwindcss/vite` or `@nuxtjs/tailwindcss`)
-- Check that Tailwind is in your `modules` array (for @nuxtjs/tailwindcss)
-- Verify your CSS file imports Tailwind: `@import "tailwindcss"`
+1. **For Tailwind v3 (@nuxtjs/tailwindcss):**
+
+   - Check that `@nuxtjs/tailwindcss` is in your `modules` array
+   - Verify your CSS file has the Tailwind directives:
+     ```css
+     @tailwind base;
+     @tailwind components;
+     @tailwind utilities;
+     ```
+
+2. **For Tailwind v4 (@tailwindcss/vite):**
+   - Verify `@import "nuxt-notify/styles";` is in your CSS file
+   - Check that `@tailwindcss/vite` is in your `vite.plugins`
+   - Ensure `@import "tailwindcss";` comes first
 
 ### Icons are missing
 
@@ -476,37 +506,80 @@ Types are included. If autocomplete does not appear after install:
 npx nuxi@latest module add icon
 ```
 
-### Module detection issues
+### Module detection
 
-The module will log which Tailwind setup it detects:
+The module logs which Tailwind setup it detects:
+
+**For Tailwind v3:**
 
 ```
-ℹ [nuxt-notify] Using Tailwind CSS via @nuxtjs/tailwindcss
+ℹ [nuxt-notify] Using Tailwind CSS via @nuxtjs/tailwindcss (auto-configured ✅)
 ```
 
-or
+**For Tailwind v4:**
 
 ```
 ℹ [nuxt-notify] Using Tailwind CSS via Vite plugin
+📝 Add this to your CSS file:
+  @import "tailwindcss";
+  @import "nuxt-notify/styles";
 ```
 
-If you see a different message, check your Tailwind installation.
+If you see unexpected messages, verify your Tailwind installation matches one of the setup options above.
+
+---
+
+## Comparison: Tailwind v4 vs v3
+
+| Feature          | Tailwind v3 (Nuxt Module)             | Tailwind v4 (Vite)                                       |
+| ---------------- | ------------------------------------- | -------------------------------------------------------- |
+| Setup Complexity | ✅ Easy (zero config)                 | ⚠️ Medium (requires CSS import)                          |
+| CSS Import       | `@tailwind base/components/utilities` | `@import "tailwindcss"` + `@import "nuxt-notify/styles"` |
+| Configuration    | Automatic                             | Manual CSS import required                               |
+| Recommended For  | **Most users** (simpler setup)        | Advanced users, new Tailwind features                    |
+
+**Recommendation:** Use **Tailwind v3 with @nuxtjs/tailwindcss** for the simplest setup with zero manual configuration.
+
+---
+
+## Examples
+
+Check out the [official documentation](https://nuxt-notify.nizaamomer.com/) for:
+
+- Live interactive demos
+- Complete code examples
+- Advanced usage patterns
+- Playground for testing
 
 ---
 
 ## License
 
-MIT
+MIT License - see [LICENSE](LICENSE) file for details
 
 ---
 
 ## Author
 
-**Nizam Omer** (`nizaamomer`)  
-Website: https://www.nizaamomer.com
+**Nizam Omer** (`nizaamomer`)
+
+- Website: https://www.nizaamomer.com
+- GitHub: [@nizaamomer](https://github.com/nizaamomer)
 
 ---
 
-## Contributing
+## Support
 
-Contributions are welcome! Please open an issue or submit a pull request on [GitHub](https://github.com/nizaamomer/nuxt-notify).
+- 📖 [Documentation](https://nuxt-notify.nizaamomer.com/)
+- 🐛 [Issue Tracker](https://github.com/nizaamomer/nuxt-notify/issues)
+- 💬 [Discussions](https://github.com/nizaamomer/nuxt-notify/discussions)
+
+---
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for version history and updates.
+
+---
+
+Made with ❤️ by [Nizam Omer](https://www.nizaamomer.com)

@@ -1,6 +1,6 @@
 import { ref, computed } from "vue";
-import { useRuntimeConfig } from "nuxt/app";
 import type { Toast, ToastOptions } from "../types/toast";
+import { useRuntimeConfig } from "nuxt/app";
 
 // Global state that persists across component instances
 const toasts = ref<Toast[]>([]);

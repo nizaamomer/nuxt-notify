@@ -30,24 +30,33 @@
               class="hidden sm:flex items-center gap-1 rounded-xl border border-gray-200 bg-white p-1 dark:border-gray-800 dark:bg-gray-900"
             >
               <button
-                class="seg"
-                :class="{ 'seg-active': theme === 'dark' }"
+                class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-800"
+                :class="{
+                  'bg-gray-900 text-white hover:bg-gray-900 dark:bg-white dark:text-gray-900 dark:hover:bg-white':
+                    theme === 'dark',
+                }"
                 @click="setTheme('dark')"
               >
                 <Icon name="i-lucide-moon" class="h-4 w-4" />
                 <span class="hidden md:inline">Dark</span>
               </button>
               <button
-                class="seg"
-                :class="{ 'seg-active': theme === 'light' }"
+                class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-800"
+                :class="{
+                  'bg-gray-900 text-white hover:bg-gray-900 dark:bg-white dark:text-gray-900 dark:hover:bg-white':
+                    theme === 'light',
+                }"
                 @click="setTheme('light')"
               >
                 <Icon name="i-lucide-sun" class="h-4 w-4" />
                 <span class="hidden md:inline">Light</span>
               </button>
               <button
-                class="seg"
-                :class="{ 'seg-active': theme === 'system' }"
+                class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-800"
+                :class="{
+                  'bg-gray-900 text-white hover:bg-gray-900 dark:bg-white dark:text-gray-900 dark:hover:bg-white':
+                    theme === 'system',
+                }"
                 @click="setTheme('system')"
               >
                 <Icon name="i-lucide-monitor" class="h-4 w-4" />
@@ -57,7 +66,7 @@
 
             <!-- Links (optional) -->
             <a
-              class="btn-ghost"
+              class="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ring-1 ring-gray-200 bg-white dark:text-gray-200 dark:hover:bg-gray-900 dark:ring-gray-800 dark:bg-gray-900"
               href="https://github.com/nizaamomer/nuxt-notify"
               target="_blank"
               rel="noreferrer"
@@ -89,11 +98,26 @@
               </div>
 
               <div class="flex flex-wrap gap-2">
-                <span class="badge">position: {{ notifyCfg.position }}</span>
-                <span class="badge">duration: {{ notifyCfg.duration }}ms</span>
-                <span class="badge">maxToasts: {{ notifyCfg.maxToasts }}</span>
-                <span class="badge">theme: {{ notifyCfg.theme }}</span>
-                <span class="badge">showIcon: {{ notifyCfg.showIcon }}</span>
+                <span
+                  class="inline-flex items-center rounded-xl px-3 py-1 text-xs font-medium ring-1 ring-gray-200 bg-gray-50 text-gray-700 dark:ring-gray-800 dark:bg-gray-950 dark:text-gray-200"
+                  >position: {{ notifyCfg.position }}</span
+                >
+                <span
+                  class="inline-flex items-center rounded-xl px-3 py-1 text-xs font-medium ring-1 ring-gray-200 bg-gray-50 text-gray-700 dark:ring-gray-800 dark:bg-gray-950 dark:text-gray-200"
+                  >duration: {{ notifyCfg.duration }}ms</span
+                >
+                <span
+                  class="inline-flex items-center rounded-xl px-3 py-1 text-xs font-medium ring-1 ring-gray-200 bg-gray-50 text-gray-700 dark:ring-gray-800 dark:bg-gray-950 dark:text-gray-200"
+                  >maxToasts: {{ notifyCfg.maxToasts }}</span
+                >
+                <span
+                  class="inline-flex items-center rounded-xl px-3 py-1 text-xs font-medium ring-1 ring-gray-200 bg-gray-50 text-gray-700 dark:ring-gray-800 dark:bg-gray-950 dark:text-gray-200"
+                  >theme: {{ notifyCfg.theme }}</span
+                >
+                <span
+                  class="inline-flex items-center rounded-xl px-3 py-1 text-xs font-medium ring-1 ring-gray-200 bg-gray-50 text-gray-700 dark:ring-gray-800 dark:bg-gray-950 dark:text-gray-200"
+                  >showIcon: {{ notifyCfg.showIcon }}</span
+                >
               </div>
             </div>
 
@@ -110,20 +134,40 @@
                   >
                 </div>
                 <div class="mt-3 flex flex-wrap gap-2">
-                  <button class="btn-soft" @click="setTheme('dark')">
+                  <button
+                    class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold ring-1 ring-gray-200 bg-white hover:bg-gray-50 text-gray-800 shadow-sm dark:ring-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-100"
+                    @click="setTheme('dark')"
+                  >
                     <Icon name="i-lucide-moon" class="h-4 w-4" /> Dark
                   </button>
-                  <button class="btn-soft" @click="setTheme('light')">
+                  <button
+                    class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold ring-1 ring-gray-200 bg-white hover:bg-gray-50 text-gray-800 shadow-sm dark:ring-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-100"
+                    @click="setTheme('light')"
+                  >
                     <Icon name="i-lucide-sun" class="h-4 w-4" /> Light
                   </button>
-                  <button class="btn-soft" @click="setTheme('system')">
+                  <button
+                    class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold ring-1 ring-gray-200 bg-white hover:bg-gray-50 text-gray-800 shadow-sm dark:ring-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-100"
+                    @click="setTheme('system')"
+                  >
                     <Icon name="i-lucide-monitor" class="h-4 w-4" /> System
                   </button>
                 </div>
                 <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">
-                  This demo toggles <code class="code">html.dark</code>. In real
-                  apps, set <code class="code">notify.theme</code> in
-                  <code class="code">nuxt.config</code>.
+                  This demo toggles
+                  <code
+                    class="rounded-md bg-gray-100 px-1.5 py-0.5 text-xs ring-1 ring-gray-200 text-gray-800 dark:bg-gray-900 dark:ring-gray-800 dark:text-gray-200"
+                    >html.dark</code
+                  >. In real apps, set
+                  <code
+                    class="rounded-md bg-gray-100 px-1.5 py-0.5 text-xs ring-1 ring-gray-200 text-gray-800 dark:bg-gray-900 dark:ring-gray-800 dark:text-gray-200"
+                    >notify.theme</code
+                  >
+                  in
+                  <code
+                    class="rounded-md bg-gray-100 px-1.5 py-0.5 text-xs ring-1 ring-gray-200 text-gray-800 dark:bg-gray-900 dark:ring-gray-800 dark:text-gray-200"
+                    >nuxt.config</code
+                  >.
                 </p>
               </div>
 
@@ -138,19 +182,27 @@
                   >
                 </div>
                 <div class="mt-3 flex flex-wrap gap-2">
-                  <button class="btn-soft" @click="setDir('ltr')">
+                  <button
+                    class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold ring-1 ring-gray-200 bg-white hover:bg-gray-50 text-gray-800 shadow-sm dark:ring-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-100"
+                    @click="setDir('ltr')"
+                  >
                     <Icon name="i-lucide-arrow-right-left" class="h-4 w-4" />
                     LTR
                   </button>
-                  <button class="btn-soft" @click="setDir('rtl')">
+                  <button
+                    class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold ring-1 ring-gray-200 bg-white hover:bg-gray-50 text-gray-800 shadow-sm dark:ring-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-100"
+                    @click="setDir('rtl')"
+                  >
                     <Icon name="i-lucide-arrow-left-right" class="h-4 w-4" />
                     RTL
                   </button>
                 </div>
                 <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">
                   Changes
-                  <code class="code">document.documentElement.dir</code>. Useful
-                  to verify layout in RTL languages.
+                  <code
+                    class="rounded-md bg-gray-100 px-1.5 py-0.5 text-xs ring-1 ring-gray-200 text-gray-800 dark:bg-gray-900 dark:ring-gray-800 dark:text-gray-200"
+                    >document.documentElement.dir</code
+                  >. Useful to verify layout in RTL languages.
                 </p>
               </div>
 
@@ -166,7 +218,10 @@
                 </div>
 
                 <div class="mt-3 flex flex-wrap items-center gap-2">
-                  <button class="btn-soft" @click="toggleIcons()">
+                  <button
+                    class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold ring-1 ring-gray-200 bg-white hover:bg-gray-50 text-gray-800 shadow-sm dark:ring-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-100"
+                    @click="toggleIcons()"
+                  >
                     <Icon
                       :name="iconsEnabled ? 'i-lucide-eye' : 'i-lucide-eye-off'"
                       class="h-4 w-4"
@@ -174,16 +229,26 @@
                     {{ iconsEnabled ? "Icons ON (demo)" : "Icons OFF (demo)" }}
                   </button>
 
-                  <button class="btn-ghost" @click="demoIconOverrides()">
+                  <button
+                    class="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ring-1 ring-gray-200 bg-white dark:text-gray-200 dark:hover:bg-gray-900 dark:ring-gray-800 dark:bg-gray-900"
+                    @click="demoIconOverrides()"
+                  >
                     <Icon name="i-lucide-sliders-horizontal" class="h-4 w-4" />
                     Show override demo
                   </button>
                 </div>
 
                 <p class="mt-3 text-xs text-gray-600 dark:text-gray-400">
-                  In real usage: <code class="code">notify.showIcon</code> in
-                  Nuxt config. Per-toast:
-                  <code class="code">showIcon: false</code>.
+                  In real usage:
+                  <code
+                    class="rounded-md bg-gray-100 px-1.5 py-0.5 text-xs ring-1 ring-gray-200 text-gray-800 dark:bg-gray-900 dark:ring-gray-800 dark:text-gray-200"
+                    >notify.showIcon</code
+                  >
+                  in Nuxt config. Per-toast:
+                  <code
+                    class="rounded-md bg-gray-100 px-1.5 py-0.5 text-xs ring-1 ring-gray-200 text-gray-800 dark:bg-gray-900 dark:ring-gray-800 dark:text-gray-200"
+                    >showIcon: false</code
+                  >.
                 </p>
               </div>
             </div>
@@ -193,25 +258,41 @@
         <!-- Grid -->
         <section class="grid gap-6 md:grid-cols-2">
           <!-- Basic -->
-          <div class="panel">
-            <div class="panel-head">
-              <h3 class="panel-title">Basic</h3>
-              <p class="panel-desc">Convenience helpers</p>
+          <div
+            class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+          >
+            <div class="mb-4">
+              <h3 class="text-base font-semibold">Basic</h3>
+              <p class="mt-0.5 text-xs text-gray-600 dark:text-gray-400">
+                Convenience helpers
+              </p>
             </div>
             <div class="grid grid-cols-2 gap-3">
-              <button @click="showSuccess" class="btn-success">
+              <button
+                @click="showSuccess"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
+              >
                 <Icon name="i-lucide-circle-check" class="h-5 w-5" />
                 Success
               </button>
-              <button @click="showError" class="btn-danger">
+              <button
+                @click="showError"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-sm"
+              >
                 <Icon name="i-lucide-circle-x" class="h-5 w-5" />
                 Error
               </button>
-              <button @click="showInfo" class="btn-info">
+              <button
+                @click="showInfo"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-sky-600 hover:bg-sky-700 text-white shadow-sm"
+              >
                 <Icon name="i-lucide-info" class="h-5 w-5" />
                 Info
               </button>
-              <button @click="showWarning" class="btn-warn">
+              <button
+                @click="showWarning"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-amber-500 hover:bg-amber-600 text-white shadow-sm"
+              >
                 <Icon name="i-lucide-triangle-alert" class="h-5 w-5" />
                 Warning
               </button>
@@ -219,17 +300,27 @@
           </div>
 
           <!-- Description -->
-          <div class="panel">
-            <div class="panel-head">
-              <h3 class="panel-title">With Description</h3>
-              <p class="panel-desc">Title + description</p>
+          <div
+            class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+          >
+            <div class="mb-4">
+              <h3 class="text-base font-semibold">With Description</h3>
+              <p class="mt-0.5 text-xs text-gray-600 dark:text-gray-400">
+                Title + description
+              </p>
             </div>
             <div class="space-y-3">
-              <button @click="showWithDescription" class="btn-primary w-full">
+              <button
+                @click="showWithDescription"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm w-full"
+              >
                 <Icon name="i-lucide-message-square" class="h-5 w-5" />
                 Show detailed toast
               </button>
-              <button @click="showCalendarEvent" class="btn-secondary w-full">
+              <button
+                @click="showCalendarEvent"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm w-full"
+              >
                 <Icon name="i-lucide-calendar-days" class="h-5 w-5" />
                 Calendar event
               </button>
@@ -237,22 +328,26 @@
           </div>
 
           <!-- Actions -->
-          <div class="panel">
-            <div class="panel-head">
-              <h3 class="panel-title">Actions</h3>
-              <p class="panel-desc">Vertical + horizontal</p>
+          <div
+            class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+          >
+            <div class="mb-4">
+              <h3 class="text-base font-semibold">Actions</h3>
+              <p class="mt-0.5 text-xs text-gray-600 dark:text-gray-400">
+                Vertical + horizontal
+              </p>
             </div>
             <div class="space-y-3">
               <button
                 @click="showWithActionsVertical"
-                class="btn-primary w-full"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm w-full"
               >
                 <Icon name="i-lucide-zap" class="h-5 w-5" />
                 Vertical actions
               </button>
               <button
                 @click="showWithActionsHorizontal"
-                class="btn-secondary w-full"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm w-full"
               >
                 <Icon name="i-lucide-layout-grid" class="h-5 w-5" />
                 Horizontal actions
@@ -261,21 +356,34 @@
           </div>
 
           <!-- Avatar -->
-          <div class="panel">
-            <div class="panel-head">
-              <h3 class="panel-title">Avatar</h3>
-              <p class="panel-desc">Image + icon + text</p>
+          <div
+            class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+          >
+            <div class="mb-4">
+              <h3 class="text-base font-semibold">Avatar</h3>
+              <p class="mt-0.5 text-xs text-gray-600 dark:text-gray-400">
+                Image + icon + text
+              </p>
             </div>
             <div class="space-y-3">
-              <button @click="showWithAvatarImage" class="btn-primary w-full">
+              <button
+                @click="showWithAvatarImage"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm w-full"
+              >
                 <Icon name="i-lucide-user-plus" class="h-5 w-5" />
                 Avatar image
               </button>
-              <button @click="showWithAvatarIcon" class="btn-secondary w-full">
+              <button
+                @click="showWithAvatarIcon"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm w-full"
+              >
                 <Icon name="i-lucide-bell" class="h-5 w-5" />
                 Avatar icon
               </button>
-              <button @click="showWithAvatarText" class="btn-soft w-full">
+              <button
+                @click="showWithAvatarText"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold ring-1 ring-gray-200 bg-white hover:bg-gray-50 text-gray-800 shadow-sm dark:ring-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-100 w-full"
+              >
                 <Icon name="i-lucide-a-large-small" class="h-5 w-5" />
                 Avatar text
               </button>
@@ -283,21 +391,34 @@
           </div>
 
           <!-- Options -->
-          <div class="panel">
-            <div class="panel-head">
-              <h3 class="panel-title">Options</h3>
-              <p class="panel-desc">Progress, duration, callback</p>
+          <div
+            class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+          >
+            <div class="mb-4">
+              <h3 class="text-base font-semibold">Options</h3>
+              <p class="mt-0.5 text-xs text-gray-600 dark:text-gray-400">
+                Progress, duration, callback
+              </p>
             </div>
             <div class="space-y-3">
-              <button @click="showNoProgress" class="btn-soft w-full">
+              <button
+                @click="showNoProgress"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold ring-1 ring-gray-200 bg-white hover:bg-gray-50 text-gray-800 shadow-sm dark:ring-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-100 w-full"
+              >
                 <Icon name="i-lucide-loader-circle" class="h-5 w-5" />
                 No progress bar
               </button>
-              <button @click="showLongDuration" class="btn-soft w-full">
+              <button
+                @click="showLongDuration"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold ring-1 ring-gray-200 bg-white hover:bg-gray-50 text-gray-800 shadow-sm dark:ring-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-100 w-full"
+              >
                 <Icon name="i-lucide-clock" class="h-5 w-5" />
                 Long duration (10s)
               </button>
-              <button @click="showClickableToast" class="btn-soft w-full">
+              <button
+                @click="showClickableToast"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold ring-1 ring-gray-200 bg-white hover:bg-gray-50 text-gray-800 shadow-sm dark:ring-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-100 w-full"
+              >
                 <Icon name="i-lucide-mouse-pointer-click" class="h-5 w-5" />
                 Click callback
               </button>
@@ -305,21 +426,34 @@
           </div>
 
           <!-- Custom UI -->
-          <div class="panel">
-            <div class="panel-head">
-              <h3 class="panel-title">Custom UI</h3>
-              <p class="panel-desc">Per-toast Tailwind overrides</p>
+          <div
+            class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+          >
+            <div class="mb-4">
+              <h3 class="text-base font-semibold">Custom UI</h3>
+              <p class="mt-0.5 text-xs text-gray-600 dark:text-gray-400">
+                Per-toast Tailwind overrides
+              </p>
             </div>
             <div class="space-y-3">
-              <button @click="showCustomUiGlass" class="btn-primary w-full">
+              <button
+                @click="showCustomUiGlass"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm w-full"
+              >
                 <Icon name="i-lucide-sparkles" class="h-5 w-5" />
                 Glass UI
               </button>
-              <button @click="showCustomUiCompact" class="btn-secondary w-full">
+              <button
+                @click="showCustomUiCompact"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm w-full"
+              >
                 <Icon name="i-lucide-align-left" class="h-5 w-5" />
                 Compact UI
               </button>
-              <button @click="showCustomUiDanger" class="btn-danger w-full">
+              <button
+                @click="showCustomUiDanger"
+                class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-sm w-full"
+              >
                 <Icon name="i-lucide-shield-alert" class="h-5 w-5" />
                 Critical UI
               </button>
@@ -343,11 +477,17 @@
               </div>
 
               <div class="flex flex-wrap gap-2">
-                <button @click="showMultiple" class="btn-primary">
+                <button
+                  @click="showMultiple"
+                  class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
+                >
                   <Icon name="i-lucide-layers" class="h-5 w-5" />
                   Show multiple
                 </button>
-                <button @click="toast.clear()" class="btn-danger">
+                <button
+                  @click="toast.clear()"
+                  class="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-sm"
+                >
                   <Icon name="i-lucide-trash-2" class="h-5 w-5" />
                   Clear all
                 </button>
@@ -361,7 +501,9 @@
                 >
                   Basic usage
                 </h4>
-                <pre class="codeblock"><code>const toast = useToast()
+                <pre
+                  class="rounded-2xl bg-gray-950 p-4 text-sm text-gray-100 overflow-x-auto ring-1 ring-gray-800"
+                ><code>const toast = useToast()
 
 toast.success('Success!')
 toast.error('Error!')
@@ -375,7 +517,9 @@ toast.warning('Warning!')</code></pre>
                 >
                   Disable icons
                 </h4>
-                <pre class="codeblock"><code>// nuxt.config.ts
+                <pre
+                  class="rounded-2xl bg-gray-950 p-4 text-sm text-gray-100 overflow-x-auto ring-1 ring-gray-800"
+                ><code>// nuxt.config.ts
 export default defineNuxtConfig({
   modules: ['nuxt-notify'],
   notify: {
@@ -778,64 +922,3 @@ const showMultiple = () => {
   });
 };
 </script>
-
-<style scoped lang="postcss">
-/* Segmented control */
-.seg {
-  @apply inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-800;
-}
-.seg-active {
-  @apply bg-gray-900 text-white hover:bg-gray-900 dark:bg-white dark:text-gray-900 dark:hover:bg-white;
-}
-
-/* Generic UI */
-.badge {
-  @apply inline-flex items-center rounded-xl px-3 py-1 text-xs font-medium ring-1 ring-gray-200 bg-gray-50 text-gray-700 dark:ring-gray-800 dark:bg-gray-950 dark:text-gray-200;
-}
-.code {
-  @apply rounded-md bg-gray-100 px-1.5 py-0.5 text-xs ring-1 ring-gray-200 text-gray-800 dark:bg-gray-900 dark:ring-gray-800 dark:text-gray-200;
-}
-.codeblock {
-  @apply rounded-2xl bg-gray-950 p-4 text-sm text-gray-100 overflow-x-auto ring-1 ring-gray-800;
-}
-
-/* Panels */
-.panel {
-  @apply rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900;
-}
-.panel-head {
-  @apply mb-4;
-}
-.panel-title {
-  @apply text-base font-semibold;
-}
-.panel-desc {
-  @apply mt-0.5 text-xs text-gray-600 dark:text-gray-400;
-}
-
-/* Buttons */
-.btn-ghost {
-  @apply inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ring-1 ring-gray-200 bg-white dark:text-gray-200 dark:hover:bg-gray-900 dark:ring-gray-800 dark:bg-gray-900;
-}
-.btn-soft {
-  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold ring-1 ring-gray-200 bg-white hover:bg-gray-50 text-gray-800 shadow-sm dark:ring-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-100;
-}
-.btn-primary {
-  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm;
-}
-.btn-secondary {
-  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm;
-}
-.btn-success {
-  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm;
-}
-.btn-info {
-  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-sky-600 hover:bg-sky-700 text-white shadow-sm;
-}
-.btn-warn {
-  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-amber-500 hover:bg-amber-600 text-white shadow-sm;
-}
-.btn-danger {
-  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-sm;
-}
-</style>

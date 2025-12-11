@@ -1,0 +1,9 @@
+/* nuxt-notify Tailwind v4 sources */
+/* Import this file in your main.css when using Tailwind v4: */
+/* @import "nuxt-notify/styles"; */
+
+@source "./components/**/*.vue";
+@source "./components/**/*.js";
+@source "./components/**/*.ts";
+@source "./composables/**/*.ts";
+@source "./composables/**/*.js";
