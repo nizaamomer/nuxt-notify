@@ -176,6 +176,28 @@ toast.add({
 
 ---
 
+## Troubleshooting
+
+### Tailwind v4 dark mode not working
+
+If you are using **Tailwind v4** and `dark:` classes are not applying even though `html.dark` is present (for example when `notify.theme: "system"`), add this line to your main CSS file:
+
+```css
+@custom-variant dark (&:where(.dark, .dark *));
+```
+
+Example (`assets/css/main.css`):
+
+```css
+@import "tailwindcss";
+@import "nuxt-notify/styles";
+
+/* Ensure Tailwind v4 dark: utilities follow html.dark */
+@custom-variant dark (&:where(.dark, .dark *));
+```
+
+---
+
 ## Documentation & Changelog
 
 - 📖 Documentation & Playground: https://nuxt-notify.nizaamomer.com/

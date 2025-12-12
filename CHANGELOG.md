@@ -7,20 +7,27 @@ This project follows **Semantic Versioning (SemVer)**:
 
 ---
 
-## [1.1.3] – 2025-12-13
+## [1.1.4] – 2025-12-12
+
+### Added
+
+- Documentation note for **Tailwind CSS v4 dark mode**: add `@custom-variant dark (&:where(.dark, .dark *));` so `dark:` utilities follow `html.dark` when using `notify.theme`.
 
 ### Fixed
 
-- Fixed toast progress timer cleanup to prevent memory leaks on rapid mount/unmount.
-- Ensured per-toast `showIcon` correctly overrides global `notify.showIcon` in all cases.
-- Improved toast click handling to avoid conflicts with action buttons.
-- Minor UI polish for avatar + icon alignment in horizontal layout.
-- Improved type safety for `ToastAction` and `ToastUI`.
+- Centered `@nuxt/icon` icons reliably by wrapping icons in an `inline-flex items-center justify-center` container where needed.
+- Normalized close button sizing to a fixed square button for consistent alignment across light/dark themes.
+- Ensured action buttons use `cursor-pointer` (and added `disabled:` cursor/opacity defaults).
 
-### Changed
+---
 
-- Internal refactors for better Nuxt 4 runtime compatibility.
-- Small performance optimizations in toast rendering and stacking logic.
+## [1.1.3] – 2025-12-12
+
+### Fixed
+
+- Removed duplicate auto-import warning for `useToast` by switching to explicit `addImports` registration.
+- Corrected close button visibility in light mode.
+- Unified theme handling to rely on `html.dark` as the single source of truth.
 
 ---
 
@@ -29,8 +36,6 @@ This project follows **Semantic Versioning (SemVer)**:
 ### Fixed
 
 - Removed duplicate auto-import warning for `useToast` by switching to explicit `addImports` registration.
-- Corrected close button visibility in light mode.
-- Unified theme handling to rely on `html.dark` as the single source of truth.
 
 ---
 

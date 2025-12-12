@@ -5,7 +5,7 @@
     @mouseenter="pauseProgress"
     @mouseleave="resumeProgress"
   >
-    <!-- Icon or Avatar -->
+    <!-- Avatar OR Icon -->
     <div v-if="toast.avatar" :class="ui.avatar">
       <img
         v-if="toast.avatar.src"
@@ -13,11 +13,12 @@
         :alt="toast.avatar.alt || 'Avatar'"
         class="w-full h-full object-cover rounded-full"
       />
-      <Icon
-        v-else-if="toast.avatar.icon"
-        :name="toast.avatar.icon"
-        class="w-full h-full"
-      />
+
+      <!-- Avatar Icon (centered) -->
+      <span v-else-if="toast.avatar.icon" :class="ui.iconWrap">
+        <Icon :name="toast.avatar.icon" :class="ui.avatarIcon" />
+      </span>
+
       <span
         v-else-if="toast.avatar.text"
         class="flex items-center justify-center w-full h-full text-sm font-medium"
@@ -26,11 +27,10 @@
       </span>
     </div>
 
-    <Icon
-      v-else-if="shouldShowIcon && toast.icon"
-      :name="toast.icon"
-      :class="ui.icon"
-    />
+    <!-- Toast Icon (centered) -->
+    <span v-else-if="shouldShowIcon && toast.icon" :class="ui.iconWrap">
+      <Icon :name="toast.icon" :class="ui.icon" />
+    </span>
 
     <!-- Content -->
     <div :class="ui.wrapper">
@@ -51,7 +51,9 @@
           :class="getActionClasses(action)"
           @click.stop="handleAction(action, $event)"
         >
-          <Icon v-if="action.icon" :name="action.icon" class="w-4 h-4" />
+          <span v-if="action.icon" :class="ui.actionIconWrap">
+            <Icon :name="action.icon" :class="ui.actionIcon" />
+          </span>
           <span>{{ action.label }}</span>
         </button>
       </div>
@@ -69,7 +71,9 @@
         :class="getActionClasses(action)"
         @click.stop="handleAction(action, $event)"
       >
-        <Icon v-if="action.icon" :name="action.icon" class="w-4 h-4" />
+        <span v-if="action.icon" :class="ui.actionIconWrap">
+          <Icon :name="action.icon" :class="ui.actionIcon" />
+        </span>
         <span>{{ action.label }}</span>
       </button>
     </div>
@@ -82,7 +86,9 @@
       @click.stop="close"
       aria-label="Close"
     >
-      <Icon :name="toast.closeIcon || 'i-lucide-x'" class="w-4 h-4" />
+      <span :class="ui.iconWrap">
+        <Icon :name="toast.closeIcon || 'i-lucide-x'" :class="ui.closeIcon" />
+      </span>
     </button>
 
     <!-- Progress Bar -->
@@ -165,6 +171,10 @@ const ui = computed(() => {
       colorClasses[color]?.root,
       o.root
     ),
+
+    // universal wrapper that centers @nuxt/icon SVGs
+    iconWrap: cx("inline-flex items-center justify-center shrink-0 leading-none"),
+
     wrapper: cx("w-0 flex-1 flex flex-col", o.wrapper),
     title: cx("text-sm font-medium text-gray-900 dark:text-white", o.title),
     description: cx(
@@ -172,29 +182,44 @@ const ui = computed(() => {
       props.toast.title ? "mt-1" : "",
       o.description
     ),
-    icon: cx("shrink-0 w-5 h-5", colorClasses[color]?.icon, o.icon),
+
+    // toast icon
+    icon: cx("w-5 h-5", colorClasses[color]?.icon, o.icon),
+
+    // avatar
     avatar: cx(
-      "shrink-0 w-10 h-10 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800",
+      "shrink-0 w-10 h-10 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 flex items-center justify-center",
       o.avatar
     ),
+    avatarIcon: cx("w-5 h-5", colorClasses[color]?.icon),
+
     actions: cx(
       "flex gap-1.5 shrink-0",
       orientation === "horizontal" ? "items-center" : "items-start mt-2.5",
       o.actions
     ),
+
+    // action icon
+    actionIconWrap: cx("inline-flex items-center justify-center leading-none"),
+    actionIcon: "w-4 h-4",
+
     progress: cx(
       "absolute inset-x-0 bottom-0 h-1 transition-all duration-100",
       progressColorClasses[color],
       o.progress
     ),
+
+    // fixed square close button (prevents tall look)
     close: cx(
-      // Visible in both light & dark
-      "p-1 shrink-0 rounded-md transition-colors",
+      "h-8 w-8 inline-flex items-center justify-center",
+      "shrink-0 rounded-md transition-colors leading-none",
       "text-gray-500 hover:text-gray-700 hover:bg-gray-100",
       "dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800",
       "focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gray-400/50 dark:focus-visible:ring-gray-600/60",
+      "cursor-pointer",
       o.close
     ),
+    closeIcon: cx("w-4 h-4 block", o.close),
   };
 });
 
@@ -204,7 +229,6 @@ const shouldShowIcon = computed(() => {
   const globalShowIcon =
     (runtimeConfig.public?.notify as any)?.showIcon ?? true;
 
-  // per-toast overrides global if explicitly set
   if (props.toast.showIcon === false) return false;
   if (props.toast.showIcon === true) return true;
 
@@ -236,7 +260,6 @@ const actionVariantClasses = (variant: ToastAction["variant"] = "outline") => {
 };
 
 const actionColorRing = (color: ToastColor = "neutral") => {
-  // subtle accent for focus ring and hover ring for colored actions
   const map: Record<ToastColor, string> = {
     primary: "focus-visible:ring-blue-500/50",
     secondary: "focus-visible:ring-purple-500/50",
@@ -256,7 +279,8 @@ const getActionClasses = (action: ToastAction) => {
 
   const base =
     "inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md transition-colors " +
-    "focus:outline-none focus-visible:ring-2 focus-visible:ring-inset";
+    "focus:outline-none focus-visible:ring-2 focus-visible:ring-inset " +
+    "cursor-pointer disabled:cursor-not-allowed disabled:opacity-60";
 
   return [
     base,
@@ -299,9 +323,7 @@ const startProgress = () => {
     if (isPaused.value) return;
 
     progress.value -= decrement;
-    if (progress.value <= 0) {
-      close();
-    }
+    if (progress.value <= 0) close();
   }, interval);
 };
 
