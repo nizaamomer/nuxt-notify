@@ -15,34 +15,29 @@
 import { useRuntimeConfig } from "nuxt/app";
 import { computed } from "vue";
 import { useToast } from "../composables/useToast";
+
 const { toasts, remove } = useToast();
 const config = useRuntimeConfig();
 
 const containerClasses = computed(() => {
-  const position =
-    (config.public?.notify &&
-      (config.public.notify as Record<string, any>).position) ||
-    "top-right";
-  const baseClasses =
+  const position = (config.public?.notify as any)?.position ?? "top-right";
+
+  const base =
     "fixed pointer-events-none w-full max-w-md sm:max-w-sm md:max-w-md flex flex-col";
+  const zIndex = "z-[99999]";
+  const padding = "p-4";
 
-  const zIndexClass = "z-[99999]";
-  const paddingClass = "p-4";
-
-  const positionClasses = {
+  const positions = {
     "top-right": "top-0 right-0 items-end",
     "top-left": "top-0 left-0 items-start",
     "bottom-right": "bottom-0 right-0 items-end",
     "bottom-left": "bottom-0 left-0 items-start",
     "top-center": "top-0 left-1/2 -translate-x-1/2 items-center",
     "bottom-center": "bottom-0 left-1/2 -translate-x-1/2 items-center",
-  };
+  } as const;
 
-  return [
-    baseClasses,
-    zIndexClass,
-    paddingClass,
-    positionClasses[position as keyof typeof positionClasses],
-  ].join(" ");
+  return [base, zIndex, padding, positions[position as keyof typeof positions]]
+    .filter(Boolean)
+    .join(" ");
 });
 </script>

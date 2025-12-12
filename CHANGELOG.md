@@ -7,11 +7,30 @@ This project follows **Semantic Versioning (SemVer)**:
 
 ---
 
+## [1.1.3] – 2025-12-13
+
+### Fixed
+
+- Fixed toast progress timer cleanup to prevent memory leaks on rapid mount/unmount.
+- Ensured per-toast `showIcon` correctly overrides global `notify.showIcon` in all cases.
+- Improved toast click handling to avoid conflicts with action buttons.
+- Minor UI polish for avatar + icon alignment in horizontal layout.
+- Improved type safety for `ToastAction` and `ToastUI`.
+
+### Changed
+
+- Internal refactors for better Nuxt 4 runtime compatibility.
+- Small performance optimizations in toast rendering and stacking logic.
+
+---
+
 ## [1.1.2] – 2025-12-12
 
 ### Fixed
 
 - Removed duplicate auto-import warning for `useToast` by switching to explicit `addImports` registration.
+- Corrected close button visibility in light mode.
+- Unified theme handling to rely on `html.dark` as the single source of truth.
 
 ---
 

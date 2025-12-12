@@ -1,6 +1,6 @@
 <template>
   <li
-    :class="[toastClasses, 'nuxt-notify-toast', themeClass]"
+    :class="[toastClasses, 'nuxt-notify-toast']"
     @click="handleClick"
     @mouseenter="pauseProgress"
     @mouseleave="resumeProgress"
@@ -25,6 +25,7 @@
         {{ toast.avatar.text }}
       </span>
     </div>
+
     <Icon
       v-else-if="shouldShowIcon && toast.icon"
       :name="toast.icon"
@@ -46,6 +47,7 @@
         <button
           v-for="(action, index) in toast.actions"
           :key="index"
+          type="button"
           :class="getActionClasses(action)"
           @click.stop="handleAction(action, $event)"
         >
@@ -63,6 +65,7 @@
       <button
         v-for="(action, index) in toast.actions"
         :key="index"
+        type="button"
         :class="getActionClasses(action)"
         @click.stop="handleAction(action, $event)"
       >
@@ -74,6 +77,7 @@
     <!-- Close Button -->
     <button
       v-if="showClose"
+      type="button"
       :class="ui.close"
       @click.stop="close"
       aria-label="Close"
@@ -93,17 +97,18 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRuntimeConfig } from "nuxt/app";
-import type { Toast } from "../types/toast";
+import type { Toast, ToastAction, ToastColor } from "../types/toast";
 
 const props = defineProps<{ toast: Toast }>();
 const emit = defineEmits<{ remove: [id: string] }>();
-const config = useRuntimeConfig();
+
+const runtimeConfig = useRuntimeConfig();
 
 const progress = ref(100);
 const isPaused = ref(false);
 let progressInterval: ReturnType<typeof setInterval> | null = null;
 
-const colorClasses: Record<string, any> = {
+const colorClasses: Record<ToastColor, { root: string; icon: string }> = {
   primary: {
     root: "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500",
     icon: "text-blue-500",
@@ -134,7 +139,7 @@ const colorClasses: Record<string, any> = {
   },
 };
 
-const progressColorClasses: Record<string, string> = {
+const progressColorClasses: Record<ToastColor, string> = {
   primary: "bg-blue-500",
   secondary: "bg-purple-500",
   success: "bg-green-500",
@@ -148,7 +153,7 @@ const cx = (...parts: Array<string | false | null | undefined>) =>
   parts.filter(Boolean).join(" ");
 
 const ui = computed(() => {
-  const color = props.toast.color || "primary";
+  const color = (props.toast.color || "primary") as ToastColor;
   const orientation = props.toast.orientation || "vertical";
   const o = props.toast.ui || {};
 
@@ -183,7 +188,11 @@ const ui = computed(() => {
       o.progress
     ),
     close: cx(
-      "p-0 shrink-0 text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors",
+      // Visible in both light & dark
+      "p-1 shrink-0 rounded-md transition-colors",
+      "text-gray-500 hover:text-gray-700 hover:bg-gray-100",
+      "dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800",
+      "focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gray-400/50 dark:focus-visible:ring-gray-600/60",
       o.close
     ),
   };
@@ -192,7 +201,8 @@ const ui = computed(() => {
 const toastClasses = computed(() => ui.value.root);
 
 const shouldShowIcon = computed(() => {
-  const globalShowIcon = (config.public?.notify as any)?.showIcon ?? true;
+  const globalShowIcon =
+    (runtimeConfig.public?.notify as any)?.showIcon ?? true;
 
   // per-toast overrides global if explicitly set
   if (props.toast.showIcon === false) return false;
@@ -200,53 +210,71 @@ const shouldShowIcon = computed(() => {
 
   return globalShowIcon;
 });
+
 const showClose = computed(() => props.toast.close !== false);
 
 const showProgress = computed(() => {
   return (
     props.toast.progress !== false &&
-    props.toast.duration &&
+    !!props.toast.duration &&
     props.toast.duration > 0
   );
 });
 
-const getActionClasses = (action: any) => {
+const actionVariantClasses = (variant: ToastAction["variant"] = "outline") => {
+  const base: Record<NonNullable<ToastAction["variant"]>, string> = {
+    solid:
+      "bg-gray-900 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100",
+    outline:
+      "border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800",
+    soft: "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700",
+    ghost:
+      "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+    link: "text-gray-700 dark:text-gray-300 hover:underline",
+  };
+  return base[variant];
+};
+
+const actionColorRing = (color: ToastColor = "neutral") => {
+  // subtle accent for focus ring and hover ring for colored actions
+  const map: Record<ToastColor, string> = {
+    primary: "focus-visible:ring-blue-500/50",
+    secondary: "focus-visible:ring-purple-500/50",
+    success: "focus-visible:ring-green-500/50",
+    info: "focus-visible:ring-blue-400/50",
+    warning: "focus-visible:ring-yellow-500/50",
+    error: "focus-visible:ring-red-500/50",
+    neutral:
+      "focus-visible:ring-gray-400/50 dark:focus-visible:ring-gray-600/60",
+  };
+  return map[color];
+};
+
+const getActionClasses = (action: ToastAction) => {
   const variant = action.variant || "outline";
   const color = action.color || "neutral";
 
-  const baseClasses =
-    "inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md transition-colors";
+  const base =
+    "inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md transition-colors " +
+    "focus:outline-none focus-visible:ring-2 focus-visible:ring-inset";
 
-  const variantClasses: Record<string, string> = {
-    solid: `bg-gray-900 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100`,
-    outline: `border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800`,
-    soft: `bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700`,
-    ghost: `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800`,
-    link: `text-gray-700 dark:text-gray-300 hover:underline`,
-  };
-
-  return [baseClasses, variantClasses[variant], action.class]
+  return [
+    base,
+    actionVariantClasses(variant),
+    actionColorRing(color),
+    action.class,
+  ]
     .filter(Boolean)
     .join(" ");
 };
 
 const handleClick = () => {
-  if (props.toast.callback) {
-    props.toast.callback();
-  }
+  props.toast.callback?.();
 };
 
-const handleAction = (action: any, event: Event) => {
-  if (action.onClick) {
-    action.onClick(event);
-  }
+const handleAction = (action: ToastAction, event: Event) => {
+  action.onClick?.(event);
 };
-
-const themeClass = computed(() => {
-  const config = useRuntimeConfig();
-  const theme = (config.public?.notify as any)?.theme ?? "dark";
-  return theme === "dark" ? "dark" : "";
-});
 
 const close = () => {
   emit("remove", props.toast.id);
@@ -268,22 +296,18 @@ const startProgress = () => {
   const decrement = (interval / duration) * 100;
 
   progressInterval = setInterval(() => {
-    if (!isPaused.value) {
-      progress.value -= decrement;
-      if (progress.value <= 0) {
-        close();
-      }
+    if (isPaused.value) return;
+
+    progress.value -= decrement;
+    if (progress.value <= 0) {
+      close();
     }
   }, interval);
 };
 
-onMounted(() => {
-  startProgress();
-});
+onMounted(startProgress);
 
 onUnmounted(() => {
-  if (progressInterval) {
-    clearInterval(progressInterval);
-  }
+  if (progressInterval) clearInterval(progressInterval);
 });
 </script>

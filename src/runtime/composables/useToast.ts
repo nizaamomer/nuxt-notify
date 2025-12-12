@@ -2,17 +2,18 @@ import { ref, computed } from "vue";
 import type { Toast, ToastOptions } from "../types/toast";
 import { useRuntimeConfig } from "nuxt/app";
 
-// Global state that persists across component instances
+// Global state shared across all instances
 const toasts = ref<Toast[]>([]);
 
 export const useToast = () => {
   const config = useRuntimeConfig();
 
-  // Read from runtimeConfig INSIDE the composable (not from Node "process")
-  const maxToasts = computed(() => config.public.notify?.maxToasts ?? 5);
+  const globalMaxToasts = computed(() => config.public.notify?.maxToasts ?? 5);
+
   const defaultDuration = computed(
     () => config.public.notify?.duration ?? 5000
   );
+
   const showIcon = computed(() =>
     config.public.notify?.showIcon !== undefined
       ? config.public.notify.showIcon
@@ -20,16 +21,27 @@ export const useToast = () => {
   );
 
   const add = (options: ToastOptions) => {
-    const id = `toast-${Date.now()}-${Math.random()
-      .toString(36)
-      .substring(2, 9)}`;
+    const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 
     const duration =
       options.duration !== undefined ? options.duration : defaultDuration.value;
 
-    // Remove oldest toast if max limit reached
-    if (toasts.value.length >= maxToasts.value) {
-      toasts.value.shift();
+    // 🔹 Per-toast maxToasts overrides global
+    const effectiveMaxToasts =
+      options.maxToasts !== undefined
+        ? options.maxToasts
+        : globalMaxToasts.value;
+
+    // Trim existing stack BEFORE adding the new toast
+    if (
+      typeof effectiveMaxToasts === "number" &&
+      effectiveMaxToasts > 0 &&
+      toasts.value.length >= effectiveMaxToasts
+    ) {
+      const excess = toasts.value.length - effectiveMaxToasts + 1;
+      if (excess > 0) {
+        toasts.value.splice(0, excess);
+      }
     }
 
     const toast: Toast = {
@@ -49,9 +61,7 @@ export const useToast = () => {
 
   const remove = (id: string) => {
     const index = toasts.value.findIndex((t) => t.id === id);
-    if (index > -1) {
-      const toast = toasts.value[index];
-      // if (toast?.callback) toast.callback();
+    if (index !== -1) {
       toasts.value.splice(index, 1);
     }
   };
@@ -60,62 +70,58 @@ export const useToast = () => {
     toasts.value = [];
   };
 
-  // Convenience methods
+  // Convenience helpers
   const success = (
     title: string,
     description?: string,
     options?: Partial<ToastOptions>
-  ) => {
-    return add({
+  ) =>
+    add({
       title,
       description,
       color: "success",
       ...(showIcon.value ? { icon: "i-lucide-circle-check" } : {}),
       ...options,
     });
-  };
 
   const error = (
     title: string,
     description?: string,
     options?: Partial<ToastOptions>
-  ) => {
-    return add({
+  ) =>
+    add({
       title,
       description,
       color: "error",
       ...(showIcon.value ? { icon: "i-lucide-circle-x" } : {}),
       ...options,
     });
-  };
 
   const info = (
     title: string,
     description?: string,
     options?: Partial<ToastOptions>
-  ) => {
-    return add({
+  ) =>
+    add({
       title,
       description,
       color: "info",
       ...(showIcon.value ? { icon: "i-lucide-info" } : {}),
       ...options,
     });
-  };
 
   const warning = (
     title: string,
     description?: string,
     options?: Partial<ToastOptions>
-  ) => {
-    return add({
+  ) =>
+    add({
       title,
       description,
       color: "warning",
       ...(showIcon.value ? { icon: "i-lucide-triangle-alert" } : {}),
       ...options,
     });
-  };
 
   return {
     toasts,
