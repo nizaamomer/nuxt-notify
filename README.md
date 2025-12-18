@@ -9,6 +9,11 @@ Advanced toast notifications for **Nuxt 3 / Nuxt 4** using **Tailwind CSS** and 
 
 ---
 
+![npm](https://img.shields.io/npm/v/nuxt-notify)
+![downloads](https://img.shields.io/npm/dm/nuxt-notify)
+![license](https://img.shields.io/npm/l/nuxt-notify)
+
+
 ## Requirements
 
 - **Tailwind CSS is required**  
