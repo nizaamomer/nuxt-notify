@@ -13,6 +13,11 @@ Advanced toast notifications for **Nuxt 3 / Nuxt 4** using **Tailwind CSS** and 
 ![downloads](https://img.shields.io/npm/dm/nuxt-notify)
 ![license](https://img.shields.io/npm/l/nuxt-notify)
 
+![Nuxt](https://img.shields.io/badge/Nuxt-3%20%7C%204-00DC82)
+![Vue](https://img.shields.io/badge/Vue-3-4FC08D)
+![Tailwind](https://img.shields.io/badge/Tailwind-CSS-38BDF8)
+![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6)
+
 
 ## Requirements
 
