@@ -1,13 +1,18 @@
-# Nuxt Notify 🚀
+# Nuxt Notify <img width="40" height="40" alt="logo" src="https://github.com/user-attachments/assets/72215460-5294-43c6-b686-42aa5f9c8548" /> 🚀
 
 Advanced toast notifications for **Nuxt 3 / Nuxt 4** using **Tailwind CSS** and **Nuxt Icon** — clean UI, actions, avatars, progress, themes, and per-toast Tailwind overrides.
 
 > Maintained by **Nizam Omer** (`nizaamomer`)  
-> Official site: https://nuxt-notify.nizaamomer.com/  
-> Website: https://www.nizaamomer.com  
+> Official
+ site: https://nuxt-notify.nizaamomer.com/  
+> Website: https://www.nizaamom
+er.com  
 > GitHub: https://github.com/nizaamomer/nuxt-notify
-
 ---
+
+<img width="1876" height="1146" alt="banner" src="https://github.com/user-attachments/assets/22ca8267-1a63-43f6-8788-804c034a81ce" />
+
+<br>
 
 ![npm](https://img.shields.io/npm/v/nuxt-notify)
 ![downloads](https://img.shields.io/npm/dm/nuxt-notify)
