@@ -5,8 +5,7 @@ Advanced toast notifications for **Nuxt 3 / Nuxt 4** using **Tailwind CSS** and 
 > Maintained by **Nizam Omer** (`nizaamomer`)  
 > Official
  site: https://nuxt-notify.nizaamomer.com/  
-> Website: https://www.nizaamom
-er.com  
+> Website: https://www.nizaamomer.com  
 > GitHub: https://github.com/nizaamomer/nuxt-notify
 ---
 
