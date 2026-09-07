@@ -7,7 +7,21 @@ This project follows **Semantic Versioning (SemVer)**:
 
 ---
 
-## [1.1.4] – 2025-12-12
+## [1.1.5] – 2026-03-07
+
+### Fixed
+
+- **Theme default mismatch**: plugin now defaults to `system` (matching module defaults) instead of `dark`.
+- **Global dark mode side effect**: `notify.theme` now scopes the `dark` class to the toast container only, so it no longer overrides your app's global color mode.
+- **SSR state leak**: toast state now uses Nuxt `useState` instead of a module-level ref, preventing cross-request state sharing on the server.
+- **Position-aware animations**: enter/leave transitions now follow the configured toast position.
+
+### Changed
+
+- Improved TypeScript declarations for `notify` config in `nuxt.config.ts` (`log`, `strict`, and all options).
+- ESLint now targets module source only (excludes playground demo UI).
+
+---
 
 ### Added
 

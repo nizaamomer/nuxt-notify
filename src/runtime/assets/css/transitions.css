@@ -1,4 +1,4 @@
-/* Toast transitions */
+/* Toast transitions — direction follows container position */
 .toast-enter-active {
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   pointer-events: auto;
@@ -9,14 +9,30 @@
   pointer-events: auto;
 }
 
-.toast-enter-from {
+.toast-enter-from,
+.toast-leave-to {
   opacity: 0;
   transform: translateX(100%) scale(0.8);
 }
 
-.toast-leave-to {
-  opacity: 0;
-  transform: translateX(100%) scale(0.8);
+[data-position$="-left"] .toast-enter-from,
+[data-position$="-left"] .toast-leave-to {
+  transform: translateX(-100%) scale(0.8);
+}
+
+[data-position^="top-"][data-position$="-center"] .toast-enter-from,
+[data-position^="top-"][data-position$="-center"] .toast-leave-to {
+  transform: translateY(-100%) scale(0.8);
+}
+
+[data-position^="bottom-"][data-position$="-center"] .toast-enter-from,
+[data-position^="bottom-"][data-position$="-center"] .toast-leave-to {
+  transform: translateY(100%) scale(0.8);
+}
+
+[data-position^="bottom-"]:not([data-position$="-center"]) .toast-enter-from,
+[data-position^="bottom-"]:not([data-position$="-center"]) .toast-leave-to {
+  transform: translateY(100%) scale(0.8);
 }
 
 .toast-move {

@@ -5,8 +5,7 @@ Advanced toast notifications for **Nuxt 3 / Nuxt 4** using **Tailwind CSS** and 
 > Maintained by **Nizam Omer** (`nizaamomer`)  
 > Official
 > site: https://nuxt-notify.nizaamomer.com/  
-> Website: https://www.nizaamom
-> er.com  
+> Website: https://www.nizaamomer.com  
 > GitHub: https://github.com/nizaamomer/nuxt-notify
 
 ---
@@ -193,9 +192,11 @@ toast.add({
 
 ## Troubleshooting
 
-### Tailwind v4 dark mode not working
+### Theme only affects toasts (not your whole app)
 
-If you are using **Tailwind v4** and `dark:` classes are not applying even though `html.dark` is present (for example when `notify.theme: "system"`), add this line to your main CSS file:
+`notify.theme` applies the `dark` class to the toast container only. Your app's own color mode (e.g. `@nuxtjs/color-mode`) is not overridden.
+
+If you use **Tailwind v4** and toast `dark:` classes are not applying, add this to your main CSS file:
 
 ```css
 @custom-variant dark (&:where(.dark, .dark *));

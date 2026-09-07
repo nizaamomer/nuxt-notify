@@ -11,10 +11,23 @@ export default createConfigForNuxt({
   },
   dirs: {
     src: [
-      './playground',
+      './src',
     ],
   },
 })
   .append(
-    // your custom flat config here...
+    {
+      ignores: [
+        'playground/**',
+        'test/**',
+        'dist/**',
+        'build.config.ts',
+      ],
+    },
+    {
+      files: ['src/runtime/components/**/*.vue'],
+      rules: {
+        'vue/multi-word-component-names': 'off',
+      },
+    },
   )
