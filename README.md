@@ -17,6 +17,8 @@ Advanced toast notifications for **Nuxt 3 / Nuxt 4** using **Tailwind CSS** and 
 ![npm](https://img.shields.io/npm/v/nuxt-notify)
 ![downloads](https://img.shields.io/npm/dm/nuxt-notify)
 ![license](https://img.shields.io/npm/l/nuxt-notify)
+![CI](https://github.com/nizaamomer/nuxt-notify/actions/workflows/ci.yml/badge.svg)
+![bundle size](https://img.shields.io/bundlephobia/minzip/nuxt-notify)
 
 ![Nuxt](https://img.shields.io/badge/Nuxt-3%20%7C%204-00DC82)
 ![Vue](https://img.shields.io/badge/Vue-3-4FC08D)
@@ -172,6 +174,21 @@ toast.add({
 ```
 
 Overrides the global stack size **for that toast only**.
+
+---
+
+## Persistent Toasts
+
+Set `duration: 0` to keep a toast open until the user closes it manually:
+
+```ts
+toast.add({
+  title: "Action required",
+  description: "This toast stays until dismissed.",
+  duration: 0,
+  progress: false,
+});
+```
 
 ---
 

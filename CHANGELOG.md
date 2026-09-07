@@ -15,18 +15,19 @@ This project follows **Semantic Versioning (SemVer)**:
 - **Global dark mode side effect**: `notify.theme` now scopes the `dark` class to the toast container only, so it no longer overrides your app's global color mode.
 - **SSR state leak**: toast state now uses Nuxt `useState` instead of a module-level ref, preventing cross-request state sharing on the server.
 - **Position-aware animations**: enter/leave transitions now follow the configured toast position.
+- **Tailwind v3 module detection**: supports tuple module format `['@nuxtjs/tailwindcss', options]`.
 
 ### Changed
 
 - Improved TypeScript declarations for `notify` config in `nuxt.config.ts` (`log`, `strict`, and all options).
 - ESLint now targets module source only (excludes playground demo UI).
 - Added Vitest test suite covering SSR, runtime config, Tailwind v4, composable behavior, and Nuxt 3/4 compatibility.
-
-### Fixed (continued)
-
-- Tailwind v3 module detection now supports tuple module format: `['@nuxtjs/tailwindcss', options]`.
+- Added GitHub Actions CI workflow (lint, test, build).
+- Documented persistent toasts (`duration: 0`).
 
 ---
+
+## [1.1.4] – 2025-12-12
 
 ### Added
 
