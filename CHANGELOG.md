@@ -2,6 +2,9 @@
 
 All notable changes to **nuxt-notify** will be documented in this file.
 
+Maintained by **Nizam Omer** · [Levi Labs](https://www.levilabs.dev/)  
+Website: [nizaamomer.com](https://www.nizaamomer.com) · Studio: [levilabs.dev](https://www.levilabs.dev/)
+
 This project follows **Semantic Versioning (SemVer)**:  
 `MAJOR.MINOR.PATCH`
 

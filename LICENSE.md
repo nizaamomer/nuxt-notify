@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2025 Nizam Omer
+Copyright (c) 2025 Nizam Omer (https://www.nizaamomer.com) · Levi Labs (https://www.levilabs.dev/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

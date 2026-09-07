@@ -2,9 +2,10 @@
 
 Advanced toast notifications for **Nuxt 3 / Nuxt 4** using **Tailwind CSS** and **Nuxt Icon** — clean UI, actions, avatars, progress, themes, and per-toast Tailwind overrides.
 
-> Maintained by **Nizam Omer** (`nizaamomer`)  
+> Maintained by **Nizam Omer** · [Levi Labs](https://www.levilabs.dev/)  
 > Official site: https://nuxt-notify.nizaamomer.com/  
 > Website: https://www.nizaamomer.com  
+> Studio: https://www.levilabs.dev/  
 > GitHub: https://github.com/nizaamomer/nuxt-notify
 
 ---
@@ -250,10 +251,11 @@ MIT
 
 ## Author
 
-**Nizam Omer**  
-Website: https://www.nizaamomer.com  
+**Nizam Omer** — Founder, [Levi Labs](https://www.levilabs.dev/)  
+Personal site: https://www.nizaamomer.com  
+Studio: https://www.levilabs.dev/  
 GitHub: https://github.com/nizaamomer
 
 ---
 
-Made with 💚 by Nizam Omer
+Made with 💚 by [Nizam Omer](https://www.nizaamomer.com) · [Levi Labs](https://www.levilabs.dev/)
