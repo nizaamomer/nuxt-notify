@@ -3,8 +3,7 @@
 Advanced toast notifications for **Nuxt 3 / Nuxt 4** using **Tailwind CSS** and **Nuxt Icon** — clean UI, actions, avatars, progress, themes, and per-toast Tailwind overrides.
 
 > Maintained by **Nizam Omer** (`nizaamomer`)  
-> Official
-> site: https://nuxt-notify.nizaamomer.com/  
+> Official site: https://nuxt-notify.nizaamomer.com/  
 > Website: https://www.nizaamomer.com  
 > GitHub: https://github.com/nizaamomer/nuxt-notify
 
@@ -48,8 +47,10 @@ Advanced toast notifications for **Nuxt 3 / Nuxt 4** using **Tailwind CSS** and 
 - 🔘 Actions (vertical & horizontal layouts)
 - 👤 Avatars (image / icon / text)
 - ⏱️ Progress bar with pause on hover
+- 🌓 Theme switching (`dark | light | system`) scoped to toasts only
 - 🎨 Per-toast Tailwind UI overrides
 - 📦 Per-toast **`maxToasts` stack override**
+- 📌 Persistent toasts (`duration: 0`)
 
 ---
 
@@ -75,7 +76,7 @@ npm install nuxt-notify
 
 Choose **ONE** option.
 
-### Option A: Tailwind v3 (Recommended)
+### Option A: Tailwind v3 (`@nuxtjs/tailwindcss`)
 
 ```bash
 npx nuxi@latest module add tailwindcss
@@ -83,8 +84,8 @@ npx nuxi@latest module add tailwindcss
 
 ```ts
 export default defineNuxtConfig({
-  modules: ["@nuxtjs/tailwindcss", "nuxt-notify"],
-});
+  modules: ['@nuxtjs/tailwindcss', 'nuxt-notify'],
+})
 ```
 
 ```css
@@ -92,6 +93,8 @@ export default defineNuxtConfig({
 @tailwind components;
 @tailwind utilities;
 ```
+
+Content paths for module components are registered automatically.
 
 ---
 
@@ -102,23 +105,23 @@ npm install tailwindcss @tailwindcss/vite
 ```
 
 ```ts
-import tailwindcss from "@tailwindcss/vite";
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineNuxtConfig({
-  modules: ["nuxt-notify"],
+  modules: ['nuxt-notify'],
   vite: {
     plugins: [tailwindcss()],
   },
-  css: ["~/assets/css/main.css"],
-});
+  css: ['~/assets/css/main.css'],
+})
 ```
 
 ```css
-@import "tailwindcss";
-@import "nuxt-notify/styles";
+@import 'tailwindcss';
+@import 'nuxt-notify/styles';
 ```
 
-> ⚠️ Required for Tailwind v4 component scanning.
+> ⚠️ `@import "nuxt-notify/styles"` is required for Tailwind v4 component scanning.
 
 ---
 
@@ -134,15 +137,15 @@ npx nuxi@latest module add icon
 
 ```ts
 export default defineNuxtConfig({
-  modules: ["nuxt-notify"],
+  modules: ['nuxt-notify'],
   notify: {
-    position: "top-right",
+    position: 'top-right',
     duration: 5000,
     maxToasts: 5,
-    theme: "dark", //default: system
+    theme: 'system', // 'light' | 'dark' | 'system'
     showIcon: true,
   },
-});
+})
 ```
 
 The toast container is mounted automatically.
@@ -153,12 +156,12 @@ The toast container is mounted automatically.
 
 ```vue
 <script setup>
-const toast = useToast();
+const toast = useToast()
 
-toast.success("Saved", "Your changes were saved.");
-toast.error("Error", "Something went wrong.");
-toast.info("Heads up", "New version is available.");
-toast.warning("Careful", "This action cannot be undone.");
+toast.success('Saved', 'Your changes were saved.')
+toast.error('Error', 'Something went wrong.')
+toast.info('Heads up', 'New version is available.')
+toast.warning('Careful', 'This action cannot be undone.')
 </script>
 ```
 
@@ -168,9 +171,9 @@ toast.warning("Careful", "This action cannot be undone.");
 
 ```ts
 toast.add({
-  title: "Replace stack",
+  title: 'Replace stack',
   maxToasts: 1,
-});
+})
 ```
 
 Overrides the global stack size **for that toast only**.
@@ -183,11 +186,11 @@ Set `duration: 0` to keep a toast open until the user closes it manually:
 
 ```ts
 toast.add({
-  title: "Action required",
-  description: "This toast stays until dismissed.",
+  title: 'Action required',
+  description: 'This toast stays until dismissed.',
   duration: 0,
   progress: false,
-});
+})
 ```
 
 ---
@@ -196,13 +199,13 @@ toast.add({
 
 ```ts
 toast.add({
-  title: "Custom UI",
+  title: 'Custom UI',
   ui: {
-    root: "rounded-2xl border border-dashed",
-    title: "text-base font-semibold",
-    description: "text-xs opacity-80",
+    root: 'rounded-2xl border border-dashed',
+    title: 'text-base font-semibold',
+    description: 'text-xs opacity-80',
   },
-});
+})
 ```
 
 ---
@@ -213,7 +216,9 @@ toast.add({
 
 `notify.theme` applies the `dark` class to the toast container only. Your app's own color mode (e.g. `@nuxtjs/color-mode`) is not overridden.
 
-If you use **Tailwind v4** and toast `dark:` classes are not applying, add this to your main CSS file:
+### Tailwind v4 dark mode on toasts
+
+If toast `dark:` classes are not applying, add this to your main CSS file:
 
 ```css
 @custom-variant dark (&:where(.dark, .dark *));
@@ -222,11 +227,10 @@ If you use **Tailwind v4** and toast `dark:` classes are not applying, add this 
 Example (`assets/css/main.css`):
 
 ```css
-/* Ensure Tailwind v4 dark: utilities follow html.dark */
 @custom-variant dark (&:where(.dark, .dark *));
 
-@import "tailwindcss";
-@import "nuxt-notify/styles";
+@import 'tailwindcss';
+@import 'nuxt-notify/styles';
 ```
 
 ---
