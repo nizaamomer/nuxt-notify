@@ -79,7 +79,7 @@
     "@nuxt/schema": "^4.2.1",
     "@types/node": "latest",
     "eslint": "^9.39.1",
-    "nuxt": "^4.2.1",
+    "nuxt": "^4.3.1",
     "typescript": "~5.9.3",
     "vue-tsc": "^3.1.7"
   }

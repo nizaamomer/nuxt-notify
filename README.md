@@ -4,10 +4,11 @@ Advanced toast notifications for **Nuxt 3 / Nuxt 4** using **Tailwind CSS** and 
 
 > Maintained by **Nizam Omer** (`nizaamomer`)  
 > Official
- site: https://nuxt-notify.nizaamomer.com/  
+> site: https://nuxt-notify.nizaamomer.com/  
 > Website: https://www.nizaamom
-er.com  
+> er.com  
 > GitHub: https://github.com/nizaamomer/nuxt-notify
+
 ---
 
 <img width="1876" height="1146" alt="banner" src="https://github.com/user-attachments/assets/22ca8267-1a63-43f6-8788-804c034a81ce" />
@@ -22,7 +23,6 @@ er.com
 ![Vue](https://img.shields.io/badge/Vue-3-4FC08D)
 ![Tailwind](https://img.shields.io/badge/Tailwind-CSS-38BDF8)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6)
-
 
 ## Requirements
 
@@ -138,7 +138,7 @@ export default defineNuxtConfig({
     position: "top-right",
     duration: 5000,
     maxToasts: 5,
-    theme: "dark",
+    theme: "dark", //default: system
     showIcon: true,
   },
 });
@@ -204,11 +204,11 @@ If you are using **Tailwind v4** and `dark:` classes are not applying even thoug
 Example (`assets/css/main.css`):
 
 ```css
-@import "tailwindcss";
-@import "nuxt-notify/styles";
-
 /* Ensure Tailwind v4 dark: utilities follow html.dark */
 @custom-variant dark (&:where(.dark, .dark *));
+
+@import "tailwindcss";
+@import "nuxt-notify/styles";
 ```
 
 ---

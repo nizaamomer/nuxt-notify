@@ -19,6 +19,10 @@ export interface ModuleOptions {
   maxToasts?: number;
   theme?: "dark" | "light" | "system";
   showIcon?: boolean;
+
+  /** ✅ Control module logs (Tailwind detection message etc.) */
+  log?: boolean;
+
   strict?: boolean;
 }
 
@@ -41,8 +45,12 @@ export default defineNuxtModule<ModuleOptions>({
     position: "top-right",
     duration: 5000,
     maxToasts: 5,
-    theme: "dark",
+    theme: "system",
     showIcon: true,
+
+    // ✅ silent by default
+    log: false,
+
     strict: true,
   },
 
@@ -50,6 +58,7 @@ export default defineNuxtModule<ModuleOptions>({
     const resolver = createResolver(import.meta.url);
     const root = nuxt.options.rootDir;
     const isModuleBuild = root === process.cwd();
+    const logEnabled = options.log === true;
 
     // Detect dependencies
     const hasTailwind = await pkgExists("tailwindcss", root);
@@ -64,14 +73,14 @@ export default defineNuxtModule<ModuleOptions>({
       missing.push(
         "Tailwind CSS is required. Install ONE of:\n" +
           "  - Tailwind via Vite plugin: `npm i tailwindcss @tailwindcss/vite`\n" +
-          "  - Tailwind via Nuxt module: `npm i -D @nuxtjs/tailwindcss`"
+          "  - Tailwind via Nuxt module: `npm i -D @nuxtjs/tailwindcss`",
       );
     }
 
     if (!hasNuxtIcon) {
       missing.push(
         "@nuxt/icon is required when `notify.showIcon` is enabled.\n" +
-          "  Install: `npx nuxi@latest module add icon`"
+          "  Install: `npx nuxi@latest module add icon`",
       );
     }
 
@@ -94,30 +103,31 @@ export default defineNuxtModule<ModuleOptions>({
       return false;
     });
 
-    const usingTailwindVite = hasTailwindVite && !isNuxtTailwindActive;
+    const usingTailwindVite =
+      hasTailwind && hasTailwindVite && !isNuxtTailwindActive;
 
     // Log detection result
-    if (!isModuleBuild) {
+    if (!isModuleBuild && logEnabled) {
       if (usingTailwindVite) {
         console.info("[nuxt-notify] Using Tailwind CSS via Vite plugin");
         console.info(
           "[nuxt-notify] 📝 Add this to your CSS file:\n" +
             '  @import "tailwindcss";\n' +
-            '  @import "nuxt-notify/styles";'
+            '  @import "nuxt-notify/styles";',
         );
       } else if (isNuxtTailwindActive) {
         console.info(
-          "[nuxt-notify] Using Tailwind CSS via @nuxtjs/tailwindcss (auto-configured ✅)"
+          "[nuxt-notify] Using Tailwind CSS via @nuxtjs/tailwindcss (auto-configured ✅)",
         );
       } else if (hasTailwind || hasNuxtTailwind) {
         console.warn(
           "[nuxt-notify] Tailwind CSS detected but not properly configured. " +
-            "Add @nuxtjs/tailwindcss to your modules or configure @tailwindcss/vite"
+            "Add @nuxtjs/tailwindcss to your modules or configure @tailwindcss/vite",
         );
       } else {
         console.warn(
           "[nuxt-notify] Tailwind CSS not found. " +
-            "Install either @nuxtjs/tailwindcss or @tailwindcss/vite"
+            "Install either @nuxtjs/tailwindcss or @tailwindcss/vite",
         );
       }
     }
@@ -151,7 +161,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Add transitions CSS
     nuxt.options.css.push(
-      resolver.resolve("./runtime/assets/css/transitions.css")
+      resolver.resolve("./runtime/assets/css/transitions.css"),
     );
 
     // Runtime config

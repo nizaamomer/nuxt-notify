@@ -15,7 +15,7 @@ export default defineNuxtConfig({
     position: "bottom-left",
     duration: 2000,
     maxToasts: 3,
-    theme: "dark",
+    theme: "system",
     showIcon: true,
   },
 });

@@ -14,7 +14,7 @@
             <div
               class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-sm"
             >
-              <Icon name="i-lucide-toast" class="h-5 w-5" />
+              <Icon name="i-lucide-bell" class="h-5 w-5" />
             </div>
             <div>
               <h1 class="text-lg font-semibold leading-tight">nuxt-notify</h1>
@@ -555,7 +555,7 @@ const notifyCfg = computed(() => {
     position: cfg.position ?? "top-right",
     duration: cfg.duration ?? 5000,
     maxToasts: cfg.maxToasts ?? 5,
-    theme: cfg.theme ?? "dark",
+    theme: cfg.theme ?? "system",
     showIcon: cfg.showIcon ?? true,
   };
 });
@@ -584,8 +584,8 @@ const setTheme = (t: "dark" | "light" | "system") => {
       ? t === "dark"
         ? "i-lucide-moon"
         : t === "light"
-        ? "i-lucide-sun"
-        : "i-lucide-monitor"
+          ? "i-lucide-sun"
+          : "i-lucide-monitor"
       : undefined,
     showIcon: iconsEnabled.value, // per-toast
     duration: 1800,
@@ -646,7 +646,7 @@ const showSuccess = () =>
     "Your changes have been saved.",
     {
       showIcon: iconsEnabled.value,
-    } as any
+    } as any,
   );
 
 const showError = () =>
@@ -655,7 +655,7 @@ const showError = () =>
     "There was a problem with your request.",
     {
       showIcon: iconsEnabled.value,
-    } as any
+    } as any,
   );
 
 const showInfo = () =>
@@ -664,7 +664,7 @@ const showInfo = () =>
     "Version 2.0 is now available for download.",
     {
       showIcon: iconsEnabled.value,
-    } as any
+    } as any,
   );
 
 const showWarning = () =>

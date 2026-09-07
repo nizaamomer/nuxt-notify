@@ -1,4 +1,5 @@
 /* playground/assets/css/main.css */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @import "tailwindcss";
 @import "nuxt-notify/styles";
-@custom-variant dark (&:where(.dark, .dark *));
