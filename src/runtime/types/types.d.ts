@@ -30,7 +30,7 @@ declare module 'nuxt/schema' {
       maxToasts?: number
       theme?: 'dark' | 'light' | 'system'
       showIcon?: boolean
-      /** Enable module setup logs (Tailwind detection, etc.) */
+      /** Always show setup logs. Default shows them once per project (or after upgrades). */
       log?: boolean
       /** Throw when required peer dependencies are missing (default: true) */
       strict?: boolean

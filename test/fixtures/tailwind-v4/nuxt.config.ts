@@ -10,6 +10,5 @@ export default defineNuxtConfig({
   notify: {
     strict: false,
     showIcon: false,
-    log: true,
   },
 })

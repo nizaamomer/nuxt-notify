@@ -1,4 +1,12 @@
 import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+} from 'node:fs'
+import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import {
   defineNuxtModule,
   addPlugin,
   createResolver,
@@ -6,6 +14,71 @@ import {
   addImports,
   resolvePath,
 } from '@nuxt/kit'
+
+let moduleVersion: string | undefined
+
+const getModuleVersion = () => {
+  if (moduleVersion) {
+    return moduleVersion
+  }
+
+  try {
+    moduleVersion = JSON.parse(
+      readFileSync(
+        fileURLToPath(new URL('../package.json', import.meta.url)),
+        'utf8',
+      ),
+    ).version as string
+  }
+  catch {
+    moduleVersion = '0.0.0'
+  }
+
+  return moduleVersion
+}
+
+const SETUP_HINT_CACHE = join('node_modules', '.cache', 'nuxt-notify', 'setup-hint.json')
+
+type SetupHintState = 'tailwind-vite' | 'nuxt-tailwind' | 'misconfigured' | 'missing'
+
+interface SetupHintMarker {
+  version: string
+  state: SetupHintState
+}
+
+const readSetupHintMarker = (root: string): SetupHintMarker | null => {
+  try {
+    const path = join(root, SETUP_HINT_CACHE)
+    if (!existsSync(path)) {
+      return null
+    }
+
+    return JSON.parse(readFileSync(path, 'utf8')) as SetupHintMarker
+  }
+  catch {
+    return null
+  }
+}
+
+const writeSetupHintMarker = (root: string, marker: SetupHintMarker) => {
+  const dir = join(root, 'node_modules', '.cache', 'nuxt-notify')
+  mkdirSync(dir, { recursive: true })
+  writeFileSync(join(dir, 'setup-hint.json'), JSON.stringify(marker))
+}
+
+const shouldShowSetupHint = (
+  root: string,
+  state: SetupHintState,
+  alwaysLog: boolean,
+) => {
+  if (alwaysLog) {
+    return true
+  }
+
+  const marker = readSetupHintMarker(root)
+  const version = getModuleVersion()
+  return !marker || marker.version !== version || marker.state !== state
+}
 
 export interface ModuleOptions {
   position?:
@@ -20,7 +93,7 @@ export interface ModuleOptions {
   theme?: 'dark' | 'light' | 'system'
   showIcon?: boolean
 
-  /** ✅ Control module logs (Tailwind detection message etc.) */
+  /** Always show setup logs. Default shows them once per project (or after upgrades). */
   log?: boolean
 
   strict?: boolean
@@ -49,7 +122,6 @@ export default defineNuxtModule<ModuleOptions>({
     theme: 'system',
     showIcon: true,
 
-    // ✅ silent by default
     log: false,
 
     strict: true,
@@ -59,7 +131,7 @@ export default defineNuxtModule<ModuleOptions>({
     const resolver = createResolver(import.meta.url)
     const root = nuxt.options.rootDir
     const isModuleBuild = root === process.cwd()
-    const logEnabled = options.log === true
+    const alwaysLog = options.log === true
 
     // Detect dependencies
     const hasTailwind = await pkgExists('tailwindcss', root)
@@ -108,19 +180,29 @@ export default defineNuxtModule<ModuleOptions>({
     const usingTailwindVite
       = hasTailwind && hasTailwindVite && !isNuxtTailwindActive
 
-    // Log detection result
-    if (!isModuleBuild && logEnabled) {
+    const setupHintState: SetupHintState = usingTailwindVite
+      ? 'tailwind-vite'
+      : isNuxtTailwindActive
+        ? 'nuxt-tailwind'
+        : hasTailwind || hasNuxtTailwind
+          ? 'misconfigured'
+          : 'missing'
+
+    const showSetupHint = !isModuleBuild
+      && shouldShowSetupHint(root, setupHintState, alwaysLog)
+
+    if (showSetupHint) {
       if (usingTailwindVite) {
         console.info('[nuxt-notify] Using Tailwind CSS via Vite plugin')
         console.info(
-          '[nuxt-notify] 📝 Add this to your CSS file:\n'
+          '[nuxt-notify] Add this to your CSS file:\n'
           + '  @import "tailwindcss";\n'
           + '  @import "nuxt-notify/styles";',
         )
       }
       else if (isNuxtTailwindActive) {
         console.info(
-          '[nuxt-notify] Using Tailwind CSS via @nuxtjs/tailwindcss (auto-configured ✅)',
+          '[nuxt-notify] Using Tailwind CSS via @nuxtjs/tailwindcss (auto-configured)',
         )
       }
       else if (hasTailwind || hasNuxtTailwind) {
@@ -134,6 +216,13 @@ export default defineNuxtModule<ModuleOptions>({
           '[nuxt-notify] Tailwind CSS not found. '
           + 'Install either @nuxtjs/tailwindcss or @tailwindcss/vite',
         )
+      }
+
+      if (!alwaysLog) {
+        writeSetupHintMarker(root, {
+          version: getModuleVersion(),
+          state: setupHintState,
+        })
       }
     }
 
