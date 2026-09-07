@@ -20,6 +20,11 @@ This project follows **Semantic Versioning (SemVer)**:
 
 - Improved TypeScript declarations for `notify` config in `nuxt.config.ts` (`log`, `strict`, and all options).
 - ESLint now targets module source only (excludes playground demo UI).
+- Added Vitest test suite covering SSR, runtime config, Tailwind v4, composable behavior, and Nuxt 3/4 compatibility.
+
+### Fixed (continued)
+
+- Tailwind v3 module detection now supports tuple module format: `['@nuxtjs/tailwindcss', options]`.
 
 ---
 

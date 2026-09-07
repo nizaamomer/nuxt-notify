@@ -4,13 +4,13 @@ import { setup, $fetch } from '@nuxt/test-utils/e2e'
 
 const fixture = (name: string) => resolve('test/fixtures', name)
 
-describe('basic fixture (SSR)', async () => {
+describe('configured runtime config', async () => {
   await setup({
-    rootDir: fixture('basic'),
+    rootDir: fixture('configured'),
   })
 
-  it('renders without SSR errors', async () => {
+  it('exposes notify options in runtime config', async () => {
     const html = await $fetch('/')
-    expect(html).toContain('basic')
+    expect(html).toContain('bottom-left-3000-2-dark-false')
   })
 })

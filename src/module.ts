@@ -96,9 +96,10 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Check if @nuxtjs/tailwindcss is in modules array
     const isNuxtTailwindActive = nuxt.options.modules.some((mod) => {
-      if (typeof mod === 'string') {
+      const name = Array.isArray(mod) ? mod[0] : mod
+      if (typeof name === 'string') {
         return (
-          mod === '@nuxtjs/tailwindcss' || mod.includes('nuxtjs/tailwindcss')
+          name === '@nuxtjs/tailwindcss' || name.includes('nuxtjs/tailwindcss')
         )
       }
       return false

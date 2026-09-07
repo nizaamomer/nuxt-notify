@@ -1,7 +1,10 @@
 import MyModule from '../../../src/module'
 
 export default defineNuxtConfig({
-  modules: [MyModule],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    MyModule,
+  ],
   notify: {
     strict: false,
     showIcon: false,

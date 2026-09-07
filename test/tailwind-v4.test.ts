@@ -4,13 +4,13 @@ import { setup, $fetch } from '@nuxt/test-utils/e2e'
 
 const fixture = (name: string) => resolve('test/fixtures', name)
 
-describe('basic fixture (SSR)', async () => {
+describe('tailwind v4 fixture', async () => {
   await setup({
-    rootDir: fixture('basic'),
+    rootDir: fixture('tailwind-v4'),
   })
 
-  it('renders without SSR errors', async () => {
+  it('builds and renders with @tailwindcss/vite', async () => {
     const html = await $fetch('/')
-    expect(html).toContain('basic')
+    expect(html).toContain('tailwind-v4')
   })
 })
