@@ -2,11 +2,28 @@
 
 Advanced toast notifications for **Nuxt 3 / Nuxt 4** using **Tailwind CSS** and **Nuxt Icon** — clean UI, actions, avatars, progress, themes, and per-toast Tailwind overrides.
 
-> Maintained by **Nizam Omer** · [Levi Labs](https://www.levilabs.dev/)  
-> Official site: https://nuxt-notify.nizaamomer.com/  
-> Website: https://www.nizaamomer.com  
-> Studio: https://www.levilabs.dev/  
-> GitHub: https://github.com/nizaamomer/nuxt-notify
+Maintained by **[Levi Labs](https://levilabs.dev)** ([open-source overview](https://levilabs.dev/open-source/nuxt-notify)) — built by [Nizam Omer](https://nizaamomer.com)
+
+## Table of Contents
+
+- [Requirements](#requirements)
+- [Features](#features)
+- [Installation](#installation)
+- [Tailwind CSS Setup](#tailwind-css-setup)
+- [Install Nuxt Icon](#install-nuxt-icon)
+- [Quick Start](#quick-start)
+- [Usage](#usage)
+- [Per-Toast maxToasts](#per-toast-maxtoasts)
+- [Persistent Toasts](#persistent-toasts)
+- [Custom UI Overrides](#custom-ui-overrides)
+- [Troubleshooting](#troubleshooting)
+- [Documentation](#documentation)
+- [Security](#security)
+- [Testing](#testing)
+- [Changelog](#changelog)
+- [Contributing](#contributing)
+- [Author](#author)
+- [License](#license)
 
 ---
 
@@ -236,26 +253,47 @@ Example (`assets/css/main.css`):
 
 ---
 
-## Documentation & Changelog
+## Documentation
 
-- 📖 Documentation & Playground: https://nuxt-notify.nizaamomer.com/
-- 🧾 Changelog: [CHANGELOG.md](./CHANGELOG.md)
+Full docs, API reference, and an interactive playground:
 
----
+- [nuxt-notify.nizaamomer.com](https://nuxt-notify.nizaamomer.com/)
+- [Nuxt Modules listing](https://nuxt.com/modules/nuxt-notify)
+- [npm package](https://www.npmjs.com/package/nuxt-notify)
 
-## License
+## Security
 
-MIT
+- **Toast content is rendered as text** — pass user-generated strings as titles/descriptions, not raw HTML, unless you have sanitized them in your app.
+- **SSR-safe state** — toast state uses Nuxt `useState` so requests do not share toast queues on the server (see [1.1.5](CHANGELOG.md) release notes).
+- **Scoped theming** — `notify.theme` only toggles `dark` on the toast container; it does not change your app's global color mode.
+- **No secrets in the module** — there are no API keys or server credentials; keep action URLs and callbacks under your own app's auth rules.
 
----
+If you discover a security issue, please see [SECURITY.md](SECURITY.md) — do not use the public issue tracker.
+
+## Testing
+
+```bash
+npm run lint     # ESLint
+npm test         # Vitest (SSR, composable, Tailwind v4, Nuxt 3/4)
+npm run dev      # playground
+```
+
+CI runs on every push via [GitHub Actions](https://github.com/nizaamomer/nuxt-notify/actions/workflows/ci.yml).
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for what's changed in each release.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Author
 
-**Nizam Omer** — Founder, [Levi Labs](https://www.levilabs.dev/)  
-Personal site: https://www.nizaamomer.com  
-Studio: https://www.levilabs.dev/  
-GitHub: https://github.com/nizaamomer
+**[Levi Labs](https://levilabs.dev)** — software development studio · [GitHub](https://github.com/nizaamomer) · [hello@levilabs.dev](mailto:hello@levilabs.dev)
 
----
+Created and maintained by **Nizam Omer** — [nizaamomer.com](https://nizaamomer.com) · [nizam@nizaamomer.com](mailto:nizam@nizaamomer.com)
 
-Made with 💚 by [Nizam Omer](https://www.nizaamomer.com) · [Levi Labs](https://www.levilabs.dev/)
+## License
+
+MIT. See [LICENSE.md](LICENSE.md).
